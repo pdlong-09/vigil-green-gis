@@ -1,0 +1,81 @@
+# ============================================================
+# docker-compose.yml — MÔI TRƯỜNG PHÁT TRIỂN (DEV)
+# ============================================================
+# File này dùng để chạy local / dev.
+#
+# ĐỂ DEPLOY LÊN PRODUCTION (VPS):
+#   Xem file docker-compose.prod.yml trên VPS.
+#   Bước bắt buộc trước khi up production:
+#
+#   1. Build frontend image với đúng API URL:
+#      docker build \
+#        --build-arg NEXT_PUBLIC_API_URL=https://www.vigil.green \
+#        -t web-gis-frontend:latest \
+#        ./frontend
+#
+#   2. Build backend image (nếu có thay đổi backend):
+#      docker build -t web-gis-backend:latest ./backend
+#
+#   3. Khởi động lại services:
+#      docker compose -f docker-compose.prod.yml down
+#      docker compose -f docker-compose.prod.yml up -d
+#
+# LƯU Ý QUAN TRỌNG — NEXT_PUBLIC_* VARIABLES:
+#   Các biến NEXT_PUBLIC_* của Next.js được nhúng vào JS bundle
+#   lúc BUILD TIME (không phải runtime). Vì vậy:
+#   - ĐÚNG : Truyền qua build.args (docker-compose) hoặc --build-arg (docker build)
+#   - SAI   : Truyền qua environment: (chỉ có tác dụng runtime, Next.js bỏ qua)
+# ============================================================
+
+services:
+  # Database Service (PostgreSQL with PostGIS for spatial data)
+  db:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: gialai_forest
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d gialai_forest"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend Service
+  backend:
+    build: 
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Connect to the db service
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/gialai_forest
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Persist uploaded images
+      - backend_uploads:/app/uploads
+
+  # Next.js Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # NEXT_PUBLIC_* vars PHẢI được truyền qua build.args (build-time).
+        # Truyền qua environment: sẽ KHÔNG có tác dụng với Next.js.
+        # DEV  → http://localhost:8000
+        # PROD → https://www.vigil.green (truyền qua --build-arg khi docker build)
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  backend_uploads:

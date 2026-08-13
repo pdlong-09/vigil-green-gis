@@ -1,0 +1,34 @@
+{
+  "vi": {
+    "aboutProject": "Về dự án",
+    "aboutDesc": "Hệ thống Bản đồ Cảnh báo & Giám sát Mất rừng được phát triển nhằm nhận diện nguy cơ và theo dõi tình trạng mất rừng tại khu vực tỉnh Gia Lai. Hệ thống cung cấp cái nhìn trực quan theo thời gian và các yếu tố môi trường, sử dụng dữ liệu viễn thám và AI để phát hiện sớm các rủi ro.",
+    "dataSources": "Nguồn dữ liệu",
+    "gfwTitle": "Global Forest Watch:",
+    "gfwDesc": "Dữ liệu mất rừng toàn cầu độ phân giải cao.",
+    "satelliteTitle": "Ảnh viễn thám:",
+    "satelliteDesc": "Dữ liệu chỉ số thực vật (NDVI) và độ ẩm (chờ cập nhật).",
+    "envTitle": "Địa hình & Khí hậu:",
+    "envDesc": "Độ cao (Elevation) và Lượng mưa (Rainfall) trung bình năm.",
+    "guide": "Hướng dẫn sử dụng",
+    "step1": "Kéo Thanh Thời Gian để xem diễn biến mất rừng qua các năm.",
+    "step2": "Điều chỉnh Bộ Lọc Môi Trường để khoanh vùng nguy cơ theo độ cao và lượng mưa.",
+    "step3": "Click trực tiếp vào một điểm trên bản đồ để Gửi Báo Cáo Thực Địa kèm hình ảnh minh chứng.",
+    "version": "Phiên bản 1.0.0 • 2024"
+  },
+  "en": {
+    "aboutProject": "About the Project",
+    "aboutDesc": "The Deforestation Monitoring & Warning Map System is developed to identify risks and track deforestation in Gia Lai province. It provides a visual overview over time and environmental factors, leveraging remote sensing data and AI for early risk detection.",
+    "dataSources": "Data Sources",
+    "gfwTitle": "Global Forest Watch:",
+    "gfwDesc": "High-resolution global forest loss data.",
+    "satelliteTitle": "Remote Sensing Imagery:",
+    "satelliteDesc": "Vegetation index (NDVI) and moisture data (coming soon).",
+    "envTitle": "Topography & Climate:",
+    "envDesc": "Average Elevation and Annual Rainfall.",
+    "guide": "User Guide",
+    "step1": "Drag the Time Slider to view deforestation trends over the years.",
+    "step2": "Adjust the Environmental Filters to isolate risk areas by elevation and rainfall.",
+    "step3": "Click directly on the map to Submit a Field Report with photo evidence.",
+    "version": "Version 1.0.0 • 2024"
+  }
+}

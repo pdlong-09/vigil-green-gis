@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "VQG Kon Ka Kinh - Core Zone",
+        "type": "Core Zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.30, 14.15],
+            [108.40, 14.15],
+            [108.40, 14.25],
+            [108.30, 14.25],
+            [108.30, 14.15]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "KBT Kon Chư Răng - Buffer Zone",
+        "type": "Buffer Zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.45, 14.20],
+            [108.55, 14.20],
+            [108.55, 14.30],
+            [108.45, 14.30],
+            [108.45, 14.20]
+          ]
+        ]
+      }
+    }
+  ]
+}
