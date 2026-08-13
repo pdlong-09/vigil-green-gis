@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "map": "Bản đồ VIGIL",
+    "about": "Về VIGIL",
+    "publication": "Nghiên cứu khoa học",
+    "contact": "Liên hệ"
+  },
+  "footer": {
+    "description": "Hệ thống AI cảnh báo sớm nguy cơ mất rừng",
+    "rights": "© 2026 VIGIL Web-GIS. Đã đăng ký bản quyền."
+  },
+  "landing": {
+    "tagline": "SÁNG KIẾN CÔNG NGHỆ XANH DO NGƯỜI TRẺ KHỞI XƯỚNG",
+    "hero": {
+      "title": "VIGIL",
+      "subtitle": "VIGIL tích hợp dữ liệu ảnh vệ tinh, trí tuệ nhân tạo (AI) cùng khảo sát thực địa nhằm phát hiện sớm đồng thời trực quan hóa các nguy cơ mất rừng trên bản đồ, từ đó thúc đẩy hành động bảo tồn nhanh chóng, hiệu quả hơn tại Việt Nam và trên toàn cầu.",
+      "exploreBtn": "Khám phá bản đồ VIGIL"
+    },
+    "mapInfo": {
+      "title": "VIGIL Map là gì?",
+      "desc": "Bản đồ tương tác này trực quan hóa kết quả đầu ra của pipeline học máy trên địa bàn huyện K'Bang và Mang Yang, tỉnh Gia Lai, chuyển hóa dữ liệu vệ tinh thành thông tin nguy cơ có thể tương tác và xử lý được. Mỗi ô lưới 1 km² được gán một xác suất nguy cơ phá rừng do mô hình Random Forest tạo ra, phân loại theo ba mức: nguy cơ cao (>0,7), nguy cơ trung bình (0,4–0,7) và nguy cơ thấp (<0,4). Vùng cảnh báo đánh dấu 10% ô lưới có nguy cơ cao nhất, cung cấp cho lực lượng kiểm lâm và các nhà quy hoạch bảo tồn một nền tảng ưu tiên dựa trên dữ liệu để triển khai tuần tra. Trong bước tiếp theo, chúng tôi đang mở rộng tập dữ liệu để đưa bản đồ này bao phủ toàn bộ lãnh thổ Việt Nam trong năm 2026. *Lưu ý: Các kết quả này là dự đoán thí điểm của mô hình và phục vụ mục đích phân vùng ưu tiên, không phải bằng chứng pháp lý về mất rừng.",
+      "feature1": "Vùng rủi ro độ phân giải cao",
+      "feature2": "Bộ lọc môi trường đa dạng",
+      "feature3": "Báo cáo thực địa ẩn danh"
+    },
+    "club": {
+      "title": "Câu lạc bộ VIGIL",
+      "desc": "Một nhóm các nhà nghiên cứu và bảo tồn đầy nhiệt huyết. Sứ mệnh của chúng tôi là thu hẹp khoảng cách giữa công nghệ và bảo vệ môi trường.",
+      "btn": "Tìm hiểu thêm về chúng tôi",
+      "follow_us": "Theo dõi chúng tôi"
+    },
+    "science": {
+      "title": "Nền tảng NCKH",
+      "desc": "Các mô hình của chúng tôi được xây dựng dựa trên nghiên cứu học thuật nghiêm ngặt, sử dụng hồi quy logistic và rừng ngẫu nhiên trên các tập dữ liệu viễn thám (Hansen, CHIRPS, SRTM).",
+      "btn": "Đọc bài báo khoa học"
+    },
+    "social": {
+      "title": "Hoạt động mới nhất",
+      "desc": "Theo dõi các hoạt động và chuyến đi thực địa trực tiếp từ trang Facebook của chúng tôi."
+    },
+    "activities": {
+      "title": "CÁC HOẠT ĐỘNG NỔI BẬT",
+      "desc": "Từ dữ liệu đến thực địa, biến công nghệ thành hành động bảo tồn thiết thực",
+      "group1_title": "Bản đồ cảnh báo bằng AI",
+      "group1_subtitle": "01 · AI & Viễn thám",
+      "group1_desc": "Ứng dụng đa dạng loại dữ liệu, AI và ảnh vệ tinh để dự báo sớm nguy cơ mất rừng.",
+      "group2_title": "Mạng lưới cộng đồng",
+      "group2_subtitle": "02 · Thực địa & Bảo tồn",
+      "group2_desc": "Kết nối các chuyên gia, lực lượng kiểm lâm, chính quyền địa phương và tình nguyện viên để xác minh thực địa, xây dựng kế hoạch bảo tồn và phục hồi những cánh rừng có nguy cơ cao.",
+      "group3_title": "Truyền thông",
+      "group3_subtitle": "03 · Truyền thông số",
+      "group3_desc": "Lan tỏa kiến thức, giáo dục nhận thức, phát động các phong trào cộng đồng và truyền cảm hứng thông qua truyền thông số để nhiều người cùng chung tay bảo vệ rừng."
+    },
+    "cta_section": {
+      "title": "Tham gia giám sát rừng",
+      "subtitle": "Cùng xác minh các cảnh báo nguy cơ mất rừng do AI phát hiện và đóng góp vào các giải pháp bảo tồn rừng hiệu quả hơn.",
+      "btn": "Báo cáo quan sát thực địa"
+    }
+  },
+  "about": {
+    "hero_title": "Cùng VIGIL chung tay bảo vệ những cánh rừng!",
+    "brand_story_title": "Câu chuyện thương hiệu VIGIL",
+    "brand_story_subtitle": "Khởi nguồn từ thực địa - Hành động vì tương lai bền vững",
+    "brand_story_p1": "VIGIL được khởi nguồn từ chuyến khảo sát thực địa của đội ngũ sáng lập tại Vườn Quốc gia Cúc Phương. Những quan sát trực tiếp về suy giảm rừng, mất cân bằng đa dạng sinh học và các tác động ngày càng rõ nét của biến đổi khí hậu đã đặt ra một câu hỏi: làm thế nào để công nghệ có thể góp phần bảo vệ thiên nhiên hiệu quả hơn?",
+    "brand_story_p2": "Nhìn từ thực tế, chúng tôi nhận thấy những cánh rừng không chỉ là hệ sinh thái quý giá mà còn là \"lá chắn\" tự nhiên trước thiên tai. Khi rừng bị suy giảm, nguy cơ lũ lụt, sạt lở và những tổn thất đối với cộng đồng cũng gia tăng.",
+    "brand_story_p3": "Từ đó, VIGIL được hình thành với sứ mệnh ứng dụng trí tuệ nhân tạo (AI) và dữ liệu vệ tinh để phát hiện sớm nguy cơ mất rừng, hỗ trợ lực lượng bảo tồn đưa ra hành động kịp thời. VIGIL tin rằng AI không chỉ là công nghệ, mà khi được ứng dụng đúng mục đích, sẽ trở thành một công cụ mạnh mẽ góp phần gìn giữ những cánh rừng và hướng tới một tương lai bền vững.",
+    "vision_title": "Tầm nhìn",
+    "vision_desc": "Trở thành hệ sinh thái tiên phong ứng dụng trí tuệ nhân tạo (AI) trong giám sát và cảnh báo sớm nguy cơ mất rừng, kết nối công nghệ, cộng đồng và truyền thông để góp phần bảo tồn hệ sinh thái và thúc đẩy phát triển bền vững tại Việt Nam và trên toàn thế giới.",
+    "mission_title": "Sứ mệnh",
+    "mission_desc": "Xây dựng hệ sinh thái bảo tồn rừng thông minh bằng cách kết hợp dữ liệu vệ tinh, trí tuệ nhân tạo (AI), nghiên cứu khoa học, sự tham gia của cộng đồng và truyền thông, nhằm phát hiện sớm nguy cơ mất rừng, hỗ trợ ra quyết định và thúc đẩy các hành động bảo tồn hiệu quả.",
+    "activities_title": "Hành trình VIGIL",
+    "trip_1_title": "Hành trình VIGIL bắt đầu từ Ninh Bình 2025",
+    "trip_1_desc": "Hành trình của VIGIL bắt đầu từ chuyến tình nguyện tại Ninh Bình vào năm 2025. Trong quá trình đồng hành cùng lực lượng kiểm lâm và các chuyên gia bảo tồn, đội ngũ sáng lập trực tiếp tham gia trồng rừng, chăm sóc động vật hoang dã được cứu hộ và khảo sát hiện trạng rừng. Những trải nghiệm thực tế cùng các câu chuyện từ hiện trường đã cho thấy rõ mức độ suy giảm rừng và những thách thức trong công tác bảo tồn, thôi thúc đội ngũ sáng lập tìm kiếm một giải pháp công nghệ có thể tạo ra tác động lâu dài.",
+    "trip_2_title": "Bản đồ dự báo nguy cơ mất rừng tại Gia Lai",
+    "trip_2_desc": "Từ dữ liệu vệ tinh ghi nhận biến động rừng qua nhiều năm, VIGIL đã xây dựng bản đồ dự báo nguy cơ mất rừng tại Gia Lai bằng cách phân tích hơn 6.000 ô lưới 1 km² với mô hình học máy. Hệ thống giúp xác định các khu vực có nguy cơ cao, hỗ trợ lực lượng kiểm lâm và các tổ chức bảo tồn chủ động giám sát, ưu tiên nguồn lực và can thiệp kịp thời tại các điểm nóng.",
+    "trip_3_title": "Khảo sát thực địa tại Gia Lai",
+    "trip_3_desc": "Sau khi hoàn thiện bản đồ dự báo nguy cơ mất rừng, đội ngũ VIGIL thực hiện chuyến khảo sát thực địa tại Gia Lai nhằm đối chiếu kết quả mô hình với hiện trạng rừng. Phối hợp cùng lực lượng kiểm lâm và chính quyền địa phương, đội ngũ khảo sát các khu vực có nguy cơ cao, thu thập dữ liệu thực địa và tham gia các hoạt động phục hồi rừng. Đồng thời, những cuộc trao đổi với cộng đồng địa phương giúp VIGIL nhận ra rằng bảo tồn rừng chỉ có thể bền vững khi gắn với sinh kế của người dân và phát triển du lịch xanh."
+  },
+  "publication": {
+    "hero_title": "Nghiên cứu Khoa học",
+    "hero_subtitle": "VIGIL tiếp cận công tác bảo vệ rừng thông qua nghiên cứu mở, có thể kiểm chứng độc lập và triển khai vào thực tế.",
+    "authors": "Phạm Duy Long · Nguyễn Vũ Huy · Nguyễn Đức Anh · Đỗ Nhật Quang · Đàm Anh Thư · Trần Đăng An",
+    "paper_title": "An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution",
+    "btn_mdpi": "Đọc trên MDPI ↗",
+    "btn_download": "Tải bài nghiên cứu",
+    "btn_cite": "Trích dẫn BibTeX",
+    "abstract_title": "Tóm tắt",
+    "abstract_p1": "Giám sát phá rừng đòi hỏi cả bản đồ lịch sử đáng tin cậy lẫn tín hiệu nguy cơ có thể chuyển hóa thành ưu tiên vận hành. Nghiên cứu này trình bày một pipeline học máy dạng lưới, có khả năng tái tạo, nhằm dự đoán nguy cơ phá rừng và tạo vùng cảnh báo cho tỉnh Gia Lai, Việt Nam.",
+    "abstract_p2": "Quy trình được phát triển tại huyện K'Bang và đánh giá khả năng chuyển vùng tại huyện Mang Yang. Các tập dữ liệu công khai được tích hợp ở độ phân giải ô lưới 1 km × 1 km, bao gồm Hansen Global Forest Change, SRTM, CHIRPS và các chỉ số quang học Sentinel-2 năm 2023.",
+    "abstract_p3": "Trên tập phân chia huấn luyện-kiểm tra, hồi quy logistic đạt AUC = 0,931, F1 = 0,881 và Capture@10% = 0,190; rừng ngẫu nhiên đạt AUC = 0,942, F1 = 0,878 và Capture@10% = 0,184.",
+    "abstract_p4": "Trong bài kiểm tra chuyển vùng K'Bang → Mang Yang, hồi quy logistic và rừng ngẫu nhiên đạt AUC lần lượt là 0,743 và 0,767 và Capture@10% là 0,170 và 0,145. Nghiên cứu này đã được chấp nhận đăng trên tạp chí MDPI Remote Sensing (Q1, chỉ mục Scopus), dự kiến xuất bản năm 2026.",
+    "methodology_title": "Phương pháp luận",
+    "methodology_p1": "Quy trình xây dựng mạng ô lưới 1 km², trích xuất nhãn phá rừng từ Hansen lossyear, đồng bộ dữ liệu địa hình SRTM, lượng mưa CHIRPS và chỉ số thực vật Sentinel-2.",
+    "datasets_title": "Tập dữ liệu",
+    "datasets_p1": "Dữ liệu vệ tinh công khai từ Google Earth Engine bao gồm Hansen GFC v1.12, SRTM Digital Elevation Model, CHIRPS Climate Data và ảnh Sentinel-2.",
+    "results_title": "Kết quả",
+    "results_p1": "Mô hình Rừng ngẫu nhiên đạt AUC 0.942 trên tập kiểm tra nội bộ và AUC 0.767 trong bài kiểm tra chuyển vùng từ K'Bang sang Mang Yang.",
+    "future_title": "Định hướng mở rộng",
+    "future_p1": "Mở rộng mô hình dự báo rủi ro mất rừng trên quy mô toàn quốc tại Việt Nam năm 2026."
+  },
+  "contact": {
+    "hero_title": "Liên hệ với VIGIL",
+    "hero_subtitle": "Chúng tôi luôn lắng nghe ý kiến đóng góp từ bạn để cải thiện và phát triển dự án tốt hơn.",
+    "info_title": "Thông tin liên hệ",
+    "email": "Email: vigil.greenorg@gmail.com",
+    "website": "Website: www.vigil.vn",
+    "facebook": "FB/VIGIL",
+    "facebook_url": "https://www.facebook.com/share/18yn8UxqPE/?mibextid=wwXIfr",
+    "form_title": "Góp ý & Nhắn tin",
+    "label_name": "Tên của bạn",
+    "label_email": "Địa chỉ Email",
+    "label_mobile": "Số điện thoại (nếu có)",
+    "label_topic": "Chủ đề (bắt buộc)",
+    "label_message": "Lời nhắn / Góp ý",
+    "btn_submit": "Gửi đi",
+    "btn_loading": "Đang gửi...",
+    "success_message": "Cảm ơn bạn đã góp ý. Chúng tôi sẽ sớm phản hồi!",
+    "project_box_title": "Dự án VIGIL",
+    "project_box_subtitle": "Sáng kiến công nghệ xanh do người trẻ khởi xướng"
+  }
+}

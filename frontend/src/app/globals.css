@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-be-vietnam), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono);
+
+  /* VIGIL Brand Palette */
+  --color-brand-green: #005e38;
+  --color-brand-green-dark: #004229;
+  --color-brand-green-light: #e8f5ee;
+  --color-brand-yellow: #F4D668;
+  --color-brand-yellow-light: #fdf8e1;
+  --color-brand-amber: #c98d26;
+  --color-brand-amber-light: #fef3e0;
+  --color-brand-offwhite: #f9fafb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-be-vietnam), system-ui, -apple-system, sans-serif;
+}
+
+/* Custom MapLibre Popup Styling - Dark Eco Theme */
+.maplibregl-popup-content {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  border-radius: 1.25rem !important;
+  padding: 1.25rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+  max-width: 320px !important;
+  box-sizing: border-box !important;
+}
+
+.maplibregl-popup-close-button {
+  color: #94a3b8 !important;
+  font-size: 1.25rem !important;
+  padding: 0.25rem 0.6rem !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  border-radius: 9999px !important;
+  transition: all 0.2s ease !important;
+  line-height: 1 !important;
+}
+
+.maplibregl-popup-close-button:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+}
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: #0f172a !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: #0f172a !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: #0f172a !important;
+}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: #0f172a !important;
+}
