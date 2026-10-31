@@ -56,14 +56,14 @@ export default function PublicationPage() {
     filterCount:  isVi ? `${paperCount} bài nghiên cứu` : `${paperCount} paper${paperCount > 1 ? 's' : ''}`,
     optAll:       isVi ? 'Tất cả' : 'All papers',
     sectionPub:   isVi ? 'Danh sách xuất bản' : 'Publications',
-    accepted:     isVi ? '✓ Đã chấp nhận' : '✓ Accepted',
+    submitted:    isVi ? '✓ Đã nộp ETO' : '✓ Submitted to ETO',
     inProgress:   isVi ? '⏳ Đang thực hiện' : '⏳ In Progress',
     btnToggleHide: isVi ? '↑ Ẩn chi tiết' : '↑ Hide details',
     btnToggleShow: isVi ? '↓ Xem chi tiết' : '↓ View details',
-    btnMdpi:      isVi ? 'Đọc trên MDPI ↗' : 'Read on MDPI ↗',
-    btnDownload:  isVi ? '⬇ Tải bài nghiên cứu' : '⬇ Download Paper',
+    btnWhitepaper: isVi ? '⬇ Tải whitepaper (PDF)' : '⬇ Download whitepaper (PDF)',
+    btnPoster:    'Poster (PDF)',
+    btnCode:      isVi ? 'Mã nguồn ↗' : 'Source code ↗',
     btnCite:      isVi ? '📋 Trích dẫn' : '📋 Cite',
-    toastMdpi:    isVi ? 'Bài báo sắp xuất bản chính thức trên MDPI Remote Sensing' : 'Paper coming soon on MDPI Remote Sensing',
     tabAbstract:  isVi ? 'Tóm tắt' : 'Abstract',
     tabFindings:  isVi ? 'Kết quả' : 'Results',
     tabMethod:    isVi ? 'Phương pháp' : 'Methodology',
@@ -265,7 +265,7 @@ export default function PublicationPage() {
             <div className="font-mono text-[11px] text-slate-400 mt-1.5 font-medium">{tx.filterCount}</div>
           </div>
 
-          {/* PAPER 1 — Published */}
+          {/* WHITEPAPER — IDSOL 2026 / ETO */}
           {(selectedPaper === 'all' || selectedPaper === 'paper-1') && (
             <div className={`bg-white border-2 rounded-2xl p-7 md:p-8 mb-6 shadow-sm transition-all ${paper1Expanded ? '' : 'hover:shadow-md'}`}
               style={{ borderColor: paper1Expanded ? GREEN : '#e2e8f0' }}>
@@ -275,29 +275,29 @@ export default function PublicationPage() {
                 <div className="flex gap-2 flex-wrap">
                   <span className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-1 rounded-full font-bold border"
                     style={{ backgroundColor: '#e8f5ee', color: GREEN, borderColor: `${GREEN}40` }}>
-                    {tx.accepted}
+                    {tx.submitted}
                   </span>
                   <span className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-1 rounded-full font-semibold border"
                     style={{ backgroundColor: `${GREEN}15`, color: GREEN, borderColor: `${GREEN}30` }}>
-                    MDPI Remote Sensing · Q1
+                    IDSOL 2026 · ETO
                   </span>
                 </div>
-                <span className="font-mono text-xs text-slate-400">2025</span>
+                <span className="font-mono text-xs text-slate-400">2026</span>
               </div>
 
               {/* Title & Authors */}
               <h2 className="text-lg md:text-xl font-bold leading-snug tracking-tight text-slate-800 mb-1.5">
-                An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution
+                {PAPER_TITLE}
               </h2>
               <div className="text-xs md:text-sm text-slate-500 mb-4 font-normal">
-                Phạm Duy Long · Nguyễn Vũ Huy · Nguyễn Đức Anh · Đỗ Nhật Quang · Đàm Anh Thư · Trần Đăng An
+                Phạm Duy Long · Nguyễn Đức Anh · Đỗ Nhật Quang
               </div>
 
               <hr className="border-t border-slate-100 my-4" />
 
               {/* Meta Info */}
               <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] text-slate-500 mb-5 font-medium">
-                {['Gia Lai Province · K\'Bang · Mang Yang', 'Random Forest · Logistic Regression', 'Hansen · SRTM · CHIRPS · Sentinel-2'].map((m) => (
+                {['Vietnam', 'Baseline · Logistic Regression · Random Forest', 'Hansen · SRTM · CHIRPS · Sentinel-2'].map((m) => (
                   <span key={m} className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: YELLOW }} />
                     {m}
@@ -317,20 +317,29 @@ export default function PublicationPage() {
                   {paper1Expanded ? tx.btnToggleHide : tx.btnToggleShow}
                 </button>
 
-                <button
-                  onClick={() => showToast(tx.toastMdpi)}
-                  className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 cursor-pointer transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
+                <a
+                  href="/papers/VIGIL_IDSOL2026_Whitepaper.pdf"
+                  download
+                  className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
                 >
-                  {tx.btnMdpi}
-                </button>
+                  {tx.btnWhitepaper}
+                </a>
 
                 <a
-                  href="https://github.com/Borino88/deforestation-risk-vietnam"
+                  href="/papers/VIGIL_IDSOL2026_Poster.pdf"
+                  download
+                  className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
+                >
+                  {tx.btnPoster}
+                </a>
+
+                <a
+                  href="https://github.com/pdlong-09/deforestation-risk-gialai"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
                 >
-                  {tx.btnDownload}
+                  {tx.btnCode}
                 </a>
 
                 <button
