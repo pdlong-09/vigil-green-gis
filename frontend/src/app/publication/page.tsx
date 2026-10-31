@@ -8,6 +8,17 @@ const GREEN = '#005e38';
 const YELLOW = '#F4D668';
 const AMBER = '#c98d26';
 
+const PAPER_TITLE = 'VIGIL: An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution';
+const CITE_APA = `Phạm, D. L., Nguyễn, Đ. A., & Đỗ, N. Q. (2026). ${PAPER_TITLE} [Whitepaper]. IDSOL 2026 — Emerging Technologies Olympiads (ETO).`;
+const CITE_BIBTEX = `@techreport{vigil2026idsol,
+  title       = {${PAPER_TITLE}},
+  author      = {Phạm, Duy Long and Nguyễn, Đức Anh and Đỗ, Nhật Quang},
+  type        = {Whitepaper},
+  institution = {VIGIL Team},
+  year        = {2026},
+  note        = {Submitted to IDSOL 2026 — Emerging Technologies Olympiads (ETO)}
+}`;
+
 export default function PublicationPage() {
   const { language } = useLanguage();
   const isVi = language === 'vi';
@@ -28,22 +39,8 @@ export default function PublicationPage() {
     showToast(label);
   };
 
-  const copyBibtex = () => {
-    const bib = `@article{pham2025deforestation,
-  title   = {An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution},
-  author  = {Phạm, Duy Long and Nguyễn, Vũ Huy and Nguyễn, Đức Anh and Đỗ, Nhật Quang and Đàm, Anh Thư and Trần, Đăng An},
-  journal = {Remote Sensing},
-  publisher = {MDPI},
-  year    = {2025},
-  note    = {Q1, Scopus-indexed}
-}`;
-    copyText(bib, isVi ? 'Đã sao chép BibTeX' : 'BibTeX copied to clipboard');
-  };
-
-  const copyApa = () => {
-    const apa = 'Phạm, D. L., Nguyễn, V. H., Nguyễn, Đ. A., Đỗ, N. Q., Đàm, A. T., & Trần, Đ. A. (2025). An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution. Remote Sensing. MDPI. Q1.';
-    copyText(apa, isVi ? 'Đã sao chép trích dẫn APA' : 'APA citation copied');
-  };
+  const copyBibtex = () => copyText(CITE_BIBTEX, isVi ? 'Đã sao chép BibTeX' : 'BibTeX copied to clipboard');
+  const copyApa = () => copyText(CITE_APA, isVi ? 'Đã sao chép trích dẫn APA' : 'APA citation copied');
 
   const paperCount = selectedPaper === 'all' ? 2 : 1;
 
@@ -572,38 +569,15 @@ export default function PublicationPage() {
                         ))}
                       </div>
 
-                      {citeType === 'apa' ? (
-                        <div>
-                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-xs text-slate-600 leading-relaxed mb-3">
-                            Phạm, D. L., Nguyễn, V. H., Nguyễn, Đ. A., Đỗ, N. Q., Đàm, A. T., &amp; Trần, Đ. A. (2025). An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution. <em>Remote Sensing</em>. MDPI. Q1.
-                          </div>
-                          <button onClick={copyApa} className="font-mono text-xs font-bold border rounded px-3 py-1 transition-colors cursor-pointer"
-                            style={{ color: GREEN, borderColor: GREEN, backgroundColor: 'transparent' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${GREEN}10`)}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>
-                            {tx.copyCiteApa}
-                          </button>
-                        </div>
-                      ) : (
-                        <div>
-                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-xs text-slate-600 leading-relaxed mb-3 whitespace-pre-wrap break-all">
-{`@article{pham2025deforestation,
-  title   = {An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution},
-  author  = {Phạm, Duy Long and Nguyễn, Vũ Huy and Nguyễn, Đức Anh and Đỗ, Nhật Quang and Đàm, Anh Thư and Trần, Đăng An},
-  journal = {Remote Sensing},
-  publisher = {MDPI},
-  year    = {2025},
-  note    = {Q1, Scopus-indexed}
-}`}
-                          </div>
-                          <button onClick={copyBibtex} className="font-mono text-xs font-bold border rounded px-3 py-1 transition-colors cursor-pointer"
-                            style={{ color: GREEN, borderColor: GREEN, backgroundColor: 'transparent' }}
-                            onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${GREEN}10`)}
-                            onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>
-                            {tx.copyCiteBib}
-                          </button>
-                        </div>
-                      )}
+                      <div className={`bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-xs text-slate-600 leading-relaxed mb-3${citeType === 'bib' ? ' whitespace-pre-wrap break-all' : ''}`}>
+                        {citeType === 'apa' ? CITE_APA : CITE_BIBTEX}
+                      </div>
+                      <button onClick={citeType === 'apa' ? copyApa : copyBibtex} className="font-mono text-xs font-bold border rounded px-3 py-1 transition-colors cursor-pointer"
+                        style={{ color: GREEN, borderColor: GREEN, backgroundColor: 'transparent' }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${GREEN}10`)}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>
+                        {citeType === 'apa' ? tx.copyCiteApa : tx.copyCiteBib}
+                      </button>
                     </div>
                   )}
                 </div>
