@@ -1,5 +1,7 @@
 import os
 import hashlib
+import logging
+import secrets
 import uuid
 import shutil
 from fastapi import FastAPI, Depends, UploadFile, File, Form, Request, HTTPException
@@ -26,7 +28,12 @@ def seed_admin():
     db = next(get_db())
     admin_user = db.query(models.User).filter(models.User.username == "admin").first()
     if not admin_user:
-        hashed_password = auth.get_password_hash("Admin@123")
+        # The first admin password comes from ADMIN_PASSWORD; without it a random one is generated and logged once.
+        password = os.getenv("ADMIN_PASSWORD")
+        if not password:
+            password = secrets.token_urlsafe(16)
+            logging.getLogger(__name__).warning("ADMIN_PASSWORD is not set; created user 'admin' with password %s", password)
+        hashed_password = auth.get_password_hash(password)
         db_user = models.User(
             username="admin", 
             email="admin@gialai.gov.vn",
@@ -52,10 +59,11 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 app.mount("/api/uploads", StaticFiles(directory=UPLOAD_DIR), name="api_uploads")
 
+# A salt published in the source would let anyone reverse the IPv4 hashes by brute force.
+IP_SALT = os.getenv("SALT_SECRET") or secrets.token_hex(32)
+
 def hash_ip(ip: str) -> str:
-    # Use a secret salt in production
-    salt = "gialai_secret_salt_2026"
-    return hashlib.sha256(f"{ip}{salt}".encode('utf-8')).hexdigest()
+    return hashlib.sha256(f"{ip}{IP_SALT}".encode('utf-8')).hexdigest()
 
 ABOUT_FILE = os.path.join(UPLOAD_DIR, "about.json")
 

@@ -1,3 +1,6 @@
+import os
+import secrets
+import logging
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
@@ -8,8 +11,12 @@ from sqlalchemy.orm import Session
 from database import get_db
 import models
 
-# Secret key to encode the JWT token
-SECRET_KEY = "gialai_super_secret_key_2026_change_in_production"
+# Secret key to sign the JWT token. It must come from the environment: a key
+# written in the source is public, and anyone holding it can forge an admin token.
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    SECRET_KEY = secrets.token_urlsafe(48)
+    logging.getLogger(__name__).warning("SECRET_KEY is not set; using a random key, so tokens end when the server restarts.")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
 
