@@ -420,8 +420,8 @@ export default function LandingPage() {
                 </h3>
                 <p className="text-sm text-slate-500 leading-relaxed mb-6">
                   {language === 'vi'
-                    ? 'Xem báo cáo phương pháp luận mô hình Random Forest và tập dữ liệu vệ tinh.'
-                    : 'Explore Random Forest methodology reports and satellite datasets.'}
+                    ? 'Đọc whitepaper VIGIL nộp cuộc thi IDSOL 2026 — Emerging Technologies Olympiads (ETO).'
+                    : 'Read the VIGIL whitepaper submitted to IDSOL 2026 — Emerging Technologies Olympiads (ETO).'}
                 </p>
               </div>
               <Link
