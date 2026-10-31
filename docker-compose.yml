@@ -1,30 +1,30 @@
 # ============================================================
-# docker-compose.yml — MÔI TRƯỜNG PHÁT TRIỂN (DEV)
+# docker-compose.yml — DEVELOPMENT ENVIRONMENT
 # ============================================================
-# File này dùng để chạy local / dev.
+# This file is for running the stack locally / in development.
 #
-# ĐỂ DEPLOY LÊN PRODUCTION (VPS):
-#   Xem file docker-compose.prod.yml trên VPS.
-#   Bước bắt buộc trước khi up production:
+# TO DEPLOY TO PRODUCTION (VPS):
+#   See docker-compose.prod.yml on the VPS.
+#   Required steps before bringing production up:
 #
-#   1. Build frontend image với đúng API URL:
+#   1. Build the frontend image with the right API URL:
 #      docker build \
 #        --build-arg NEXT_PUBLIC_API_URL=https://www.vigil.green \
 #        -t web-gis-frontend:latest \
 #        ./frontend
 #
-#   2. Build backend image (nếu có thay đổi backend):
+#   2. Build the backend image (if the backend changed):
 #      docker build -t web-gis-backend:latest ./backend
 #
-#   3. Khởi động lại services:
+#   3. Restart the services:
 #      docker compose -f docker-compose.prod.yml down
 #      docker compose -f docker-compose.prod.yml up -d
 #
-# LƯU Ý QUAN TRỌNG — NEXT_PUBLIC_* VARIABLES:
-#   Các biến NEXT_PUBLIC_* của Next.js được nhúng vào JS bundle
-#   lúc BUILD TIME (không phải runtime). Vì vậy:
-#   - ĐÚNG : Truyền qua build.args (docker-compose) hoặc --build-arg (docker build)
-#   - SAI   : Truyền qua environment: (chỉ có tác dụng runtime, Next.js bỏ qua)
+# IMPORTANT — NEXT_PUBLIC_* VARIABLES:
+#   Next.js embeds NEXT_PUBLIC_* variables into the JS bundle
+#   at BUILD TIME (not at runtime). Therefore:
+#   - RIGHT: pass them via build.args (docker-compose) or --build-arg (docker build)
+#   - WRONG: pass them via environment: (runtime only, Next.js ignores it)
 # ============================================================
 
 services:
@@ -66,10 +66,10 @@ services:
     build:
       context: ./frontend
       args:
-        # NEXT_PUBLIC_* vars PHẢI được truyền qua build.args (build-time).
-        # Truyền qua environment: sẽ KHÔNG có tác dụng với Next.js.
+        # NEXT_PUBLIC_* vars MUST be passed via build.args (build time).
+        # Passing them via environment: has NO effect on Next.js.
         # DEV  → http://localhost:8000
-        # PROD → https://www.vigil.green (truyền qua --build-arg khi docker build)
+        # PROD → https://www.vigil.green (pass with --build-arg to docker build)
         NEXT_PUBLIC_API_URL: http://localhost:8000
     ports:
       - "3000:3000"

@@ -17,7 +17,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/10 text-white/90 py-10 shadow-inner" style={{ backgroundColor: '#004229' }}>
       <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-        {/* Brand Logo & Subtitle — Logo VIGIL nổi bật với hiệu ứng Glassmorphism & Ambient Glow */}
+        {/* Brand logo & subtitle — prominent VIGIL logo with glassmorphism and ambient glow */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <Link href="/" className="flex items-center group mb-3" aria-label="VIGIL - Trang chủ" title="VIGIL">
             <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-md border border-white/60 group-hover:scale-105 group-hover:shadow-[0_0_22px_rgba(244,214,104,0.5)] group-hover:border-yellow-300/80 transition-all duration-300 flex items-center justify-center">

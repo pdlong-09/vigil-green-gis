@@ -72,7 +72,7 @@ export default function LandingPage() {
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Tagline UPPERCASE mới theo Feedback 02 */}
+          {/* New UPPERCASE tagline (feedback 02) */}
           <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 border border-[#F4D668]/50 shadow-inner backdrop-blur-md"
             style={{ backgroundColor: 'rgba(244,214,104,0.15)' }}>
             <Sparkles size={15} className="text-[#F4D668] animate-pulse" />
@@ -89,7 +89,7 @@ export default function LandingPage() {
             {t('landing.hero.title')}
           </motion.h1>
 
-          {/* Hero Subtitle song ngữ mới theo Feedback 03 */}
+          {/* New bilingual hero subtitle (feedback 03) */}
           <motion.p
             variants={fadeInUp}
             className="text-base md:text-xl text-white/90 mb-10 max-w-3xl mx-auto font-normal leading-relaxed"
@@ -119,7 +119,7 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* ─── 3 Nhóm Hoạt động Chính theo Feedback 04 ─── */}
+      {/* ─── Three main activity groups (feedback 04) ─── */}
       <section className="relative z-20 -mt-10 container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -289,7 +289,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Expedition Card 2 - Ninh Bình */}
+            {/* Expedition card 2 — Ninh Binh */}
             <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg hover:border-[#005e38]/40 hover:shadow-xl transition-all">
               <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
                 <h3 className="text-xl font-bold flex items-center gap-2 text-slate-700">

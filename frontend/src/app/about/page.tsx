@@ -59,7 +59,7 @@ export default function AboutPage() {
 
         <motion.div className="relative z-10 text-center px-6 max-w-4xl"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-          {/* Badge VIGIL với logo nổi bật phóng to */}
+          {/* VIGIL badge with an enlarged, prominent logo */}
           <div className="inline-flex items-center mb-5 px-4 py-2 rounded-2xl border shadow-lg backdrop-blur-md transition-all hover:scale-105"
             style={{ backgroundColor: 'rgba(255,255,255,0.95)', borderColor: 'rgba(244,214,104,0.6)', boxShadow: '0 0 20px rgba(244,214,104,0.35)' }}>
             <img src="/images/logo_cropped.png" alt="VIGIL Logo" className="h-8 md:h-10 w-auto object-contain drop-shadow-sm" />

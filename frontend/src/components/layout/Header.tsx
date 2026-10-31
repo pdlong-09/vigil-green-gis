@@ -11,7 +11,7 @@ export default function Header() {
   const { language, toggleLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // FIX #2: "Về VIGIL" moved before "Bản đồ VIGIL"
+  // FIX #2: "About VIGIL" moved before "VIGIL Map"
   const navItems = [
     { href: '/', label: t('nav.home') },
     { href: '/about', label: t('nav.about') },
@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 shadow-md" style={{ backgroundColor: '#005e38' }}>
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        {/* Brand Logo — Logo VIGIL nổi bật với hiệu ứng Glassmorphism & Ambient Glow */}
+        {/* Brand logo — prominent VIGIL logo with glassmorphism and ambient glow */}
         <Link href="/" className="flex items-center group" aria-label="VIGIL - Trang chủ" title="VIGIL">
           <div className="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl shadow-md border border-white/60 group-hover:scale-105 group-hover:shadow-[0_0_22px_rgba(244,214,104,0.5)] group-hover:border-yellow-300/80 transition-all duration-300 flex items-center justify-center">
             <img

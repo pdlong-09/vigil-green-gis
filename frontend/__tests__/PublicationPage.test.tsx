@@ -42,19 +42,19 @@ describe('PublicationPage', () => {
   it('renders all 5 research sections', () => {
     renderWithLanguage(<PublicationPage />);
     
-    // Tab: Tóm tắt (tiếng Việt — default language)
+    // Abstract tab (Vietnamese is the default language)
     expect(screen.getAllByText(/Tóm tắt/).length).toBeGreaterThan(0);
     
-    // Tab: Phương pháp
+    // Methodology tab
     expect(screen.getAllByText(/Phương pháp/).length).toBeGreaterThan(0);
     
-    // Tab: Tập dữ liệu
+    // Datasets tab
     expect(screen.getAllByText(/Tập dữ liệu/).length).toBeGreaterThan(0);
     
-    // Tab: Kết quả
+    // Results tab
     expect(screen.getAllByText(/Kết quả/).length).toBeGreaterThan(0);
     
-    // Section: Lộ trình nghiên cứu
+    // Research roadmap section
     expect(screen.getAllByText(/Lộ trình nghiên cứu/).length).toBeGreaterThan(0);
   });
 });

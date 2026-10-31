@@ -1,19 +1,19 @@
 # ============================================================
 # Dockerfile — Next.js Frontend
 # ============================================================
-# BUILD CHO DEV (qua docker-compose.yml):
+# DEV BUILD (via docker-compose.yml):
 #   docker compose up --build
-#   → NEXT_PUBLIC_API_URL=http://localhost:8000 (từ build.args trong compose)
+#   → NEXT_PUBLIC_API_URL=http://localhost:8000 (from build.args in compose)
 #
-# BUILD CHO PRODUCTION (VPS):
+# PRODUCTION BUILD (VPS):
 #   docker build \
 #     --build-arg NEXT_PUBLIC_API_URL=https://www.vigil.green \
 #     -t web-gis-frontend:latest \
 #     ./frontend
 #
-# LƯU Ý: NEXT_PUBLIC_* được bake vào JS bundle tại bước "RUN npm run build".
-#   Nếu không truyền --build-arg, sẽ dùng giá trị mặc định của ARG bên dưới.
-#   Không set qua 'environment:' trong docker-compose — sẽ KHÔNG có tác dụng.
+# NOTE: NEXT_PUBLIC_* values are baked into the JS bundle at "RUN npm run build".
+#   Without --build-arg, the ARG default below is used.
+#   Do not set them via 'environment:' in docker-compose — it has NO effect.
 # ============================================================
 
 FROM node:20-alpine AS builder

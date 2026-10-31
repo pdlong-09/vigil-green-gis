@@ -360,7 +360,7 @@ export default function InteractiveMap({
         )}
 
         {/* Protected Areas Overlay */}
-        {/* TODO: Hiện tại chưa có dữ liệu ranh giới khu bảo tồn. Tạm tắt tính năng này.
+        {/* TODO: there is no protected-area boundary data yet, so this feature is switched off.
         {showProtectedAreas && protectedAreasData && (
           <Source id="protected-areas" type="geojson" data={protectedAreasData}>
             <Layer 

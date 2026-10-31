@@ -180,7 +180,7 @@ export default function AboutTab({ language = 'vi' }: { language?: 'vi' | 'en' }
       </div>
 
       <div className="p-10 space-y-12">
-        {/* Nguồn dữ liệu */}
+        {/* Data sources */}
         <section>
           <div className="flex items-center space-x-3 text-blue-400 mb-6 border-b border-slate-700 pb-3">
             <Database size={24} />
@@ -210,7 +210,7 @@ export default function AboutTab({ language = 'vi' }: { language?: 'vi' | 'en' }
           </div>
         </section>
 
-        {/* Hướng dẫn sử dụng */}
+        {/* How to use */}
         <section>
           <div className="flex items-center space-x-3 text-orange-400 mb-6 border-b border-slate-700 pb-3">
             <Map size={24} />

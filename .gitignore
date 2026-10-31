@@ -3,7 +3,7 @@
 # ==========================================
 
 # ------------------------------------------
-# Environment & Secrets (Bảo mật)
+# Environment & Secrets
 # ------------------------------------------
 .env
 .env.local
@@ -40,7 +40,7 @@ env/
 htmlcov/
 *.sqlite3
 
-# Backend user uploads (Giữ lại thư mục nhưng bỏ qua file ảnh do người dùng upload)
+# Backend user uploads (keep the folder, ignore the images users upload)
 backend/uploads/*
 !backend/uploads/.gitkeep
 
