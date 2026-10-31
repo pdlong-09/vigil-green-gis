@@ -12,7 +12,7 @@
 > 💡 **Sứ mệnh Dự án:** *VIGIL tích hợp dữ liệu ảnh vệ tinh, trí tuệ nhân tạo (AI) cùng khảo sát thực địa nhằm phát hiện sớm đồng thời trực quan hóa các nguy cơ mất rừng trên bản đồ, từ đó thúc đẩy hành động bảo tồn nhanh chóng, hiệu quả hơn tại Việt Nam và trên toàn cầu.*
 
 - 🌐 **Website:** [www.vigil.green](https://www.vigil.green/)
-- 📄 **Whitepaper (IDSOL 2026 — ETO):** [VIGIL_IDSOL2026_Whitepaper.pdf](frontend/public/papers/VIGIL_IDSOL2026_Whitepaper.pdf) · [Poster](frontend/public/papers/VIGIL_IDSOL2026_Poster.pdf) — Phạm Duy Long, Nguyễn Đức Anh, Đỗ Nhật Quang (2026)
+- 📄 **Hồ sơ dự thi IDSOL 2026 — ETO:** [Whitepaper](eto-competition/VIGIL_IDSOL2026_Whitepaper.pdf) · [Poster](eto-competition/VIGIL_IDSOL2026_Poster.pdf) · [Pitch deck](eto-competition/VIGIL_IDSOL2026_Pitch_Deck.pdf) — Phạm Duy Long, Nguyễn Đức Anh, Đỗ Nhật Quang (2026)
 
 ---
 
@@ -26,6 +26,7 @@
 7. [Cấu Hình Biến Môi Trường](#-cấu-hình-biến-môi-trường)
 8. [Tóm Tắt API Endpoints](#-tóm-tắt-api-endpoints)
 9. [Chỉ Mục Tài Liệu Kỹ Thuật (Docs)](#-chỉ-mục-tài-liệu-kỹ-thuật-docs)
+10. [ETO Competition Resources](#-eto-competition-resources)
 
 ---
 
@@ -327,6 +328,16 @@ Hệ thống đi kèm bộ tài liệu kỹ thuật đầy đủ được lưu g
 - 🔄 **[Data_Flow.md](docs/Data_Flow.md):** Chi tiết luồng dữ liệu tĩnh (AI GeoJSON) & động (Báo cáo thực địa), cơ chế lọc động 60 FPS.
 - 🧠 **[ML_Evaluation_Methodology.md](docs/ML_Evaluation_Methodology.md):** Phương pháp luận huấn luyện AI, kịch bản Area Transfer Validation và các chỉ số đánh giá (AUC, Cap@5%/10%).
 - 📖 **[Runbook.md](docs/Runbook.md):** Cẩm nang hướng dẫn cài đặt, vận hành, bảo trì và xử lý sự cố trong môi trường thực tế.
+
+---
+
+## 🏆 ETO Competition Resources
+
+Nền tảng này được xây dựng để tham gia **IDSOL 2026 — Emerging Technologies Olympiads (ETO)**. Hồ sơ dự thi của đội VIGIL (Phạm Duy Long, Nguyễn Đức Anh, Đỗ Nhật Quang) nằm trong thư mục [`eto-competition/`](eto-competition/):
+
+- 📄 **[Whitepaper](eto-competition/VIGIL_IDSOL2026_Whitepaper.pdf):** bài viết 5 trang về pipeline, kết quả và lộ trình mở rộng toàn quốc.
+- 🖼️ **[Poster](eto-competition/VIGIL_IDSOL2026_Poster.pdf):** posterboard IDSOL26VN.
+- 🎤 **[Pitch deck](eto-competition/VIGIL_IDSOL2026_Pitch_Deck.pdf):** 26 slide thuyết trình, kèm kế hoạch kinh doanh.
 
 ---
 *© 2026 Vigil Green GIS — Gia Lai Deforestation Risk Monitoring Platform.*
