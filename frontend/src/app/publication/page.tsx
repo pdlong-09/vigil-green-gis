@@ -106,13 +106,13 @@ export default function PublicationPage() {
     sameArea:      isVi ? 'Cùng vùng' : 'Same-area',
     transferTest:  isVi ? 'Chuyển vùng' : 'Area transfer',
     sectionRoadmap: isVi ? 'Lộ trình nghiên cứu' : 'Research Roadmap',
-    roadmap1Title:  isVi ? 'Thí điểm Gia Lai — Pipeline ML' : 'Gia Lai Pilot — ML Pipeline',
-    roadmap1Desc:   isVi ? 'Dự báo nguy cơ mất rừng cấp huyện ở độ phân giải 1 km². Thiết kế hai huyện (K\'Bang + Mang Yang). Được chấp nhận đăng trên MDPI Remote Sensing Q1.' : "District-scale deforestation risk prediction at 1 km² resolution. Two-district design (K'Bang + Mang Yang). Accepted at MDPI Remote Sensing Q1.",
-    roadmap1Badge:  isVi ? '✓ Đã chấp nhận · In tháng 9/2025' : '✓ Accepted · Print Sep 2025',
-    roadmap2Title:  isVi ? 'Mở rộng quy mô quốc gia' : 'National Scale Expansion',
-    roadmap2Desc:   isVi ? 'Mở rộng pipeline bao phủ toàn bộ lãnh thổ Việt Nam. Tập dữ liệu lớn hơn, đầu vào vệ tinh cập nhật, hợp tác với các tổ chức NGO và kiểm lâm.' : 'Expanding the pipeline to full Vietnam coverage. Larger dataset, updated satellite inputs, collaboration with NGO partners and forest ranger units.',
-    roadmap3Title:  isVi ? 'Tích hợp dữ liệu cộng đồng' : 'Community Integration Layer',
-    roadmap3Desc:   isVi ? 'Tích hợp dữ liệu báo cáo từ cộng đồng, bản đồ sinh kế bền vững và lớp phủ du lịch xanh vào khung dự báo nguy cơ mất rừng.' : 'Incorporating community-reported data, sustainable livelihood mapping, and green tourism overlays into the deforestation risk framework.',
+    roadmap1Title:  isVi ? 'Thí điểm Gia Lai · Whitepaper IDSOL 2026' : 'Gia Lai Pilot · IDSOL 2026 Whitepaper',
+    roadmap1Desc:   isVi ? 'Pipeline lưới 1 km trên hai huyện K\'Bang và Mang Yang: ba mô hình, hai kiểu kiểm định. Bản đồ rủi ro đang chạy trên nền tảng web công khai, nhận báo cáo thực địa có tọa độ.' : "1 km grid pipeline over K'Bang and Mang Yang districts: three models, two validation tests. The risk map is live on a public web platform that accepts geolocated field reports.",
+    roadmap1Badge:  'Whitepaper · IDSOL 2026 / ETO',
+    roadmap2Title:  isVi ? 'Khép vòng phản hồi & hoàn thiện mô hình' : 'Closing the Loop & Hardening the Model',
+    roadmap2Desc:   isVi ? 'Đưa báo cáo thực địa đã xác minh vào huấn luyện lại; thêm kiểm định theo thời gian; bổ sung biến tiếp cận đường bộ và quyền sử dụng đất; hiệu chỉnh xác suất rủi ro; hiển thị phần giải thích ngay trên bản đồ.' : 'Feed verified field reports back into retraining; add time-based validation; add road-access and land-tenure predictors; recalibrate risk probabilities; surface explainability directly on the live map.',
+    roadmap3Title:  isVi ? 'Mở rộng toàn quốc' : 'Nationwide Scale-Up',
+    roadmap3Desc:   isVi ? 'Khi dữ liệu FRMS được bàn giao, mở rộng theo mô hình 4 lớp: dữ liệu (chỉ cần lưới mới cho tỉnh mới) · mô hình (so sánh lại theo vùng, thêm boosting) · kiểm chứng (đối chiếu địa phương cho từng tỉnh) · triển khai (nền tảng vốn không phụ thuộc tỉnh).' : 'Once FRMS data is delivered, scale along four layers: data (a new province only needs a new grid) · modeling (re-run the comparison per region, add boosting) · validation (a local cross-check per province) · deployment (the platform is already province-agnostic).',
     roadmap3Badge:  isVi ? 'Đã lên kế hoạch' : 'Planned',
     sectionOpenSci: isVi ? 'Khoa học mở' : 'Open Science',
     openSciDesc:    isVi ? 'Toàn bộ tập dữ liệu và mã nguồn pipeline của VIGIL được công bố công khai sau khi xuất bản, phù hợp với cam kết về khoa học mở và có thể tái tạo.' : "All VIGIL datasets and pipeline code are made publicly available following publication, in line with our commitment to open, reproducible science.",
@@ -579,10 +579,10 @@ export default function PublicationPage() {
           </div>
 
           <div className="relative pl-8 border-l-2" style={{ borderColor: `${GREEN}30` }}>
-            {/* 2025 */}
+            {/* 2025–2026 */}
             <div className="relative pb-10">
               <div className="absolute -left-[37px] top-[6px] w-2.5 h-2.5 rounded-full border-2" style={{ backgroundColor: YELLOW, borderColor: YELLOW }} />
-              <div className="font-mono text-[11px] tracking-wider mb-1 font-bold" style={{ color: GREEN }}>2025</div>
+              <div className="font-mono text-[11px] tracking-wider mb-1 font-bold" style={{ color: GREEN }}>2025–2026</div>
               <div className="text-base md:text-lg font-bold text-slate-800 mb-1">{tx.roadmap1Title}</div>
               <div className="text-xs md:text-sm text-slate-600 leading-relaxed mb-2 max-w-[650px]">{tx.roadmap1Desc}</div>
               <span className="font-mono text-[10px] px-2.5 py-0.5 rounded-full border inline-block font-bold"
