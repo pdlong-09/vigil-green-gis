@@ -23,7 +23,6 @@ export default function PublicationPage() {
   const { language } = useLanguage();
   const isVi = language === 'vi';
 
-  const [selectedPaper, setSelectedPaper] = useState<string>('all');
   const [paper1Expanded, setPaper1Expanded] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'abstract' | 'findings' | 'method' | 'data' | 'cite'>('abstract');
   const [citeType, setCiteType] = useState<'apa' | 'bib'>('apa');
@@ -42,8 +41,6 @@ export default function PublicationPage() {
   const copyBibtex = () => copyText(CITE_BIBTEX, isVi ? 'Đã sao chép BibTeX' : 'BibTeX copied to clipboard');
   const copyApa = () => copyText(CITE_APA, isVi ? 'Đã sao chép trích dẫn APA' : 'APA citation copied');
 
-  const paperCount = selectedPaper === 'all' ? 2 : 1;
-
   // ── i18n helpers ──────────────────────────────────────────────────────────
   const tx = {
     heroLabel:    isVi ? 'Nghiên cứu & Xuất bản' : 'Publications & Research',
@@ -52,10 +49,7 @@ export default function PublicationPage() {
     statPub:      isVi ? 'Đã xuất bản' : 'Published',
     statRank:     isVi ? 'Hạng tạp chí' : 'Journal rank',
     statPipeline: isVi ? 'Đang nghiên cứu' : 'In pipeline',
-    filterLabel:  isVi ? 'Chọn bài nghiên cứu' : 'Select paper',
-    filterCount:  isVi ? `${paperCount} bài nghiên cứu` : `${paperCount} paper${paperCount > 1 ? 's' : ''}`,
-    optAll:       isVi ? 'Tất cả' : 'All papers',
-    sectionPub:   isVi ? 'Danh sách xuất bản' : 'Publications',
+    sectionPub:   'Whitepaper',
     submitted:    isVi ? '✓ Đã nộp ETO' : '✓ Submitted to ETO',
     inProgress:   isVi ? '⏳ Đang thực hiện' : '⏳ In Progress',
     btnToggleHide: isVi ? '↑ Ẩn chi tiết' : '↑ Hide details',
@@ -115,12 +109,6 @@ export default function PublicationPage() {
     dataTitle:      isVi ? 'Tập dữ liệu dự báo' : 'Prediction Dataset',
     dataDesc:       isVi ? 'Bảng đặc trưng chính và dự báo mô hình cho huyện K\'Bang và Mang Yang.' : "Master feature table and model predictions for K'Bang and Mang Yang districts.",
     dataBtn:        isVi ? 'Tải CSV ↗' : 'Download CSV ↗',
-    paper2Title:    isVi ? 'Mở rộng Dự báo Nguy cơ Mất rừng lên Quy mô Quốc gia — Việt Nam' : 'Scaling Deforestation Risk Prediction to National Coverage — Vietnam',
-    paper2Team:     isVi ? 'Nhóm Nghiên cứu VIGIL' : 'VIGIL Research Team',
-    paper2Tag1:     isVi ? 'Toàn bộ Việt Nam' : 'Full Vietnam coverage',
-    paper2Tag2:     isVi ? 'Tập dữ liệu mở rộng' : 'Expanded dataset',
-    paper2Tag3:     isVi ? 'Mục tiêu: 2026' : 'Target: 2026',
-    paper2Btn:      isVi ? 'Đang nghiên cứu' : 'Research in progress',
     internalSplitScenario: isVi ? 'Kiểm tra nội bộ' : 'Internal split',
     transferTestScenario:  isVi ? 'Kiểm tra chuyển vùng' : 'Transfer test',
   };
@@ -239,386 +227,332 @@ export default function PublicationPage() {
             <div className="flex-1 h-[1px]" style={{ backgroundColor: `${GREEN}30` }} />
           </div>
 
-          {/* Filter Dropdown */}
-          <div className="mb-8 max-w-[520px]">
-            <div className="font-mono text-[10px] text-slate-500 tracking-[0.1em] uppercase mb-2 font-medium">
-              {tx.filterLabel}
-            </div>
-            <div className="relative">
-              <select
-                id="paper-select"
-                value={selectedPaper}
-                onChange={(e) => setSelectedPaper(e.target.value)}
-                className="w-full appearance-none bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 cursor-pointer outline-none transition-colors pr-10 shadow-sm font-medium"
-                style={{ ['--tw-ring-color' as string]: GREEN }}
-                onFocus={(e) => (e.target.style.borderColor = GREEN)}
-                onBlur={(e) => (e.target.style.borderColor = '')}
-              >
-                <option value="all">{tx.optAll}</option>
-                <option value="paper-1">An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution — 2025</option>
-                <option value="paper-2">
-                  {isVi ? 'Mở rộng Dự báo Nguy cơ Mất rừng lên Quy mô Quốc gia — Việt Nam — 2026' : 'Scaling Deforestation Risk Prediction to National Coverage — Vietnam — 2026'}
-                </option>
-              </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-xs font-bold" style={{ color: GREEN }}>▾</div>
-            </div>
-            <div className="font-mono text-[11px] text-slate-400 mt-1.5 font-medium">{tx.filterCount}</div>
-          </div>
-
           {/* WHITEPAPER — IDSOL 2026 / ETO */}
-          {(selectedPaper === 'all' || selectedPaper === 'paper-1') && (
-            <div className={`bg-white border-2 rounded-2xl p-7 md:p-8 mb-6 shadow-sm transition-all ${paper1Expanded ? '' : 'hover:shadow-md'}`}
-              style={{ borderColor: paper1Expanded ? GREEN : '#e2e8f0' }}>
+          <div className={`bg-white border-2 rounded-2xl p-7 md:p-8 mb-6 shadow-sm transition-all ${paper1Expanded ? '' : 'hover:shadow-md'}`}
+            style={{ borderColor: paper1Expanded ? GREEN : '#e2e8f0' }}>
 
-              {/* Top Badge Row */}
-              <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
-                <div className="flex gap-2 flex-wrap">
-                  <span className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-1 rounded-full font-bold border"
-                    style={{ backgroundColor: '#e8f5ee', color: GREEN, borderColor: `${GREEN}40` }}>
-                    {tx.submitted}
-                  </span>
-                  <span className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-1 rounded-full font-semibold border"
-                    style={{ backgroundColor: `${GREEN}15`, color: GREEN, borderColor: `${GREEN}30` }}>
-                    IDSOL 2026 · ETO
-                  </span>
-                </div>
-                <span className="font-mono text-xs text-slate-400">2026</span>
-              </div>
-
-              {/* Title & Authors */}
-              <h2 className="text-lg md:text-xl font-bold leading-snug tracking-tight text-slate-800 mb-1.5">
-                {PAPER_TITLE}
-              </h2>
-              <div className="text-xs md:text-sm text-slate-500 mb-4 font-normal">
-                Phạm Duy Long · Nguyễn Đức Anh · Đỗ Nhật Quang
-              </div>
-
-              <hr className="border-t border-slate-100 my-4" />
-
-              {/* Meta Info */}
-              <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] text-slate-500 mb-5 font-medium">
-                {['Vietnam', 'Baseline · Logistic Regression · Random Forest', 'Hansen · SRTM · CHIRPS · Sentinel-2'].map((m) => (
-                  <span key={m} className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: YELLOW }} />
-                    {m}
-                  </span>
-                ))}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-2.5 items-center">
-                <button
-                  onClick={() => setPaper1Expanded(prev => !prev)}
-                  className="px-4 py-2 rounded-md text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors"
-                  style={{ backgroundColor: YELLOW, color: '#003822' }}
-                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ffe380')}
-                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = YELLOW)}
-                >
-                  {paper1Expanded ? tx.btnToggleHide : tx.btnToggleShow}
-                </button>
-
-                <a
-                  href="/papers/VIGIL_IDSOL2026_Whitepaper.pdf"
-                  download
-                  className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
-                >
-                  {tx.btnWhitepaper}
-                </a>
-
-                <a
-                  href="/papers/VIGIL_IDSOL2026_Poster.pdf"
-                  download
-                  className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
-                >
-                  {tx.btnPoster}
-                </a>
-
-                <a
-                  href="https://github.com/pdlong-09/deforestation-risk-gialai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
-                >
-                  {tx.btnCode}
-                </a>
-
-                <button
-                  onClick={copyBibtex}
-                  className="px-3 py-2 rounded-md text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
-                >
-                  {tx.btnCite}
-                </button>
-              </div>
-
-              {/* EXPAND PANEL */}
-              {paper1Expanded && (
-                <div className="mt-5 border-t border-slate-100 pt-5">
-                  {/* Tabs */}
-                  <div className="flex border-b border-slate-100 gap-0 mb-5 overflow-x-auto">
-                    {(['abstract', 'findings', 'method', 'data', 'cite'] as const).map((tId) => (
-                      <button
-                        key={tId}
-                        onClick={() => setActiveTab(tId)}
-                        className={`px-4 py-2 text-xs md:text-sm font-semibold transition-colors border-b-2 whitespace-nowrap cursor-pointer bg-transparent`}
-                        style={activeTab === tId
-                          ? { color: GREEN, borderColor: GREEN }
-                          : { color: '#94a3b8', borderColor: 'transparent' }}
-                      >
-                        {tId === 'abstract' && tx.tabAbstract}
-                        {tId === 'findings' && tx.tabFindings}
-                        {tId === 'method' && tx.tabMethod}
-                        {tId === 'data' && tx.tabData}
-                        {tId === 'cite' && tx.tabCite}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Tab: Abstract */}
-                  {activeTab === 'abstract' && (
-                    <div>
-                      <p className="text-slate-600 text-sm leading-[1.8] max-w-[700px] mb-4">
-                        {isVi ? tx.abstractVI : tx.abstractEN}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mt-4">
-                        {['deforestation', 'Vietnam · Gia Lai', isVi ? 'lập bản đồ rủi ro' : 'risk mapping', isVi ? 'mô hình lưới ô vuông' : 'grid-based modeling',
-                          isVi ? 'học máy có thể giải thích' : 'interpretable machine learning', 'Random Forest', 'Sentinel-2', 'Hansen GFC'
-                        ].map((tag) => (
-                          <span key={tag} className="font-mono text-[10px] border px-2.5 py-1 rounded-full font-medium"
-                            style={{ color: GREEN, backgroundColor: `${GREEN}10`, borderColor: `${GREEN}30` }}>
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tab: Results */}
-                  {activeTab === 'findings' && (
-                    <div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                        {[
-                          { val: '0.942', label: `AUC · Random Forest\n${tx.internalSplit}`, color: GREEN },
-                          { val: '0.767', label: `AUC · ${isVi ? 'Kiểm tra chuyển vùng' : 'Transfer test'}\nK'Bang → Mang Yang`, color: GREEN },
-                          { val: '19.0%', label: `Capture@10%\n${isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}`, color: AMBER },
-                        ].map((s, i) => (
-                          <div key={i} className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
-                            <div className="text-2xl font-bold leading-none mb-1" style={{ color: s.color }}>{s.val}</div>
-                            <div className="text-[11px] text-slate-500 leading-tight whitespace-pre-line">{s.label}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="font-mono text-[10px] tracking-[0.08em] uppercase mb-2 font-bold" style={{ color: GREEN }}>
-                        {isVi ? 'Hiệu suất mô hình (Bảng 3)' : 'Model Performance (Table 3)'}
-                      </div>
-                      <div className="overflow-x-auto rounded-lg border border-slate-200 mb-3">
-                        <table className="w-full text-left text-xs min-w-[540px]">
-                          <thead className="bg-slate-50 font-mono text-[10px] uppercase border-b border-slate-200" style={{ color: GREEN }}>
-                            <tr>
-                              <th className="p-2.5">{isVi ? 'Kịch bản' : 'Scenario'}</th>
-                              <th className="p-2.5">{isVi ? 'Mô hình' : 'Model'}</th>
-                              <th className="p-2.5">AUC</th>
-                              <th className="p-2.5">F1</th>
-                              <th className="p-2.5">Capture@5%</th>
-                              <th className="p-2.5">Capture@10%</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100 text-slate-600">
-                            <tr className="opacity-50">
-                              <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
-                              <td className="p-2.5">{isVi ? 'Tham chiếu' : 'Baseline'}</td>
-                              <td className="p-2.5">0.504</td><td className="p-2.5">0.491</td>
-                              <td className="p-2.5">7.7%</td><td className="p-2.5">12.9%</td>
-                            </tr>
-                            <tr>
-                              <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
-                              <td className="p-2.5">{isVi ? 'Hồi quy Logistic' : 'Logistic Reg.'}</td>
-                              <td className="p-2.5">0.931</td><td className="p-2.5">0.881</td>
-                              <td className="p-2.5">9.5%</td>
-                              <td className="p-2.5 font-bold" style={{ color: GREEN }}>19.0%</td>
-                            </tr>
-                            <tr style={{ backgroundColor: `${GREEN}08` }}>
-                              <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
-                              <td className="p-2.5 font-bold" style={{ color: GREEN }}>Random Forest</td>
-                              <td className="p-2.5 font-bold" style={{ color: GREEN }}>0.942</td>
-                              <td className="p-2.5">0.878</td><td className="p-2.5">9.2%</td><td className="p-2.5">18.4%</td>
-                            </tr>
-                            <tr className="opacity-50">
-                              <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
-                              <td className="p-2.5">{isVi ? 'Tham chiếu' : 'Baseline'}</td>
-                              <td className="p-2.5">0.376</td><td className="p-2.5">0.654</td>
-                              <td className="p-2.5">2.8%</td><td className="p-2.5">5.9%</td>
-                            </tr>
-                            <tr>
-                              <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
-                              <td className="p-2.5">{isVi ? 'Hồi quy Logistic' : 'Logistic Reg.'}</td>
-                              <td className="p-2.5">0.743</td><td className="p-2.5">0.666</td>
-                              <td className="p-2.5">8.8%</td><td className="p-2.5">17.0%</td>
-                            </tr>
-                            <tr style={{ backgroundColor: `${GREEN}08` }}>
-                              <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
-                              <td className="p-2.5 font-bold" style={{ color: GREEN }}>Random Forest</td>
-                              <td className="p-2.5 font-bold" style={{ color: GREEN }}>0.767</td>
-                              <td className="p-2.5">0.671</td><td className="p-2.5">7.5%</td><td className="p-2.5">14.5%</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-
-                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 leading-relaxed">
-                        {tx.notableText}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tab: Methodology */}
-                  {activeTab === 'method' && (
-                    <div className="space-y-5">
-                      {[
-                        { num: '01', title: tx.step01Title, body: tx.step01Desc },
-                        { num: '02', title: tx.step02Title, body: tx.step02Desc },
-                      ].map((s) => (
-                        <div key={s.num}>
-                          <div className="flex items-center gap-2.5 mb-2">
-                            <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
-                              style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>{s.num}</span>
-                            <span className="text-sm font-semibold text-slate-800">{s.title}</span>
-                          </div>
-                          <p className="text-xs text-slate-600 leading-relaxed">{s.body}</p>
-                        </div>
-                      ))}
-
-                      <div>
-                        <div className="flex items-center gap-2.5 mb-2">
-                          <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
-                            style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>03</span>
-                          <span className="text-sm font-semibold text-slate-800">{tx.step03Title}</span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                            <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.baselineLabel}</div>
-                            <div className="text-xs font-medium text-slate-800 mb-1">{isVi ? 'Điểm rủi ro' : 'Risk Score'}</div>
-                            <div className="text-[11px] text-slate-500">{tx.baselineDesc}</div>
-                          </div>
-                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                            <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.interpLabel}</div>
-                            <div className="text-xs font-medium text-slate-800 mb-1">{isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}</div>
-                            <div className="text-[11px] text-slate-500">{tx.interpDesc}</div>
-                          </div>
-                          <div className="rounded-lg p-3 border-2" style={{ backgroundColor: `${GREEN}08`, borderColor: `${GREEN}50` }}>
-                            <div className="font-mono text-[10px] font-bold mb-1" style={{ color: GREEN }}>{tx.bestLabel}</div>
-                            <div className="text-xs font-medium text-slate-800 mb-1">Random Forest</div>
-                            <div className="text-[11px] text-slate-600">{tx.bestDesc}</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-2.5 mb-2">
-                          <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
-                            style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>04</span>
-                          <span className="text-sm font-semibold text-slate-800">{tx.step04Title}</span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
-                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                            <div className="text-xs font-medium text-slate-800 mb-1">{tx.splitTitle}</div>
-                            <div className="text-[11px] text-slate-500">{tx.splitDesc}</div>
-                          </div>
-                          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                            <div className="text-xs font-medium text-slate-800 mb-1">{tx.transferTitle}</div>
-                            <div className="text-[11px] text-slate-500">{tx.transferDesc}</div>
-                          </div>
-                        </div>
-                        <div className="font-mono text-[11px] text-slate-500">{tx.metricsLabel}</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tab: Datasets */}
-                  {activeTab === 'data' && (
-                    <div className="space-y-2 mb-3">
-                      {datasets.map((ds, idx) => (
-                        <div key={idx} className="bg-slate-50 border border-slate-200 rounded-lg p-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
-                          <div>
-                            <div className="text-xs font-semibold text-slate-800 mb-0.5">{ds.name}</div>
-                            <div className="font-mono text-[10px] font-bold mb-1" style={{ color: GREEN }}>{ds.res}</div>
-                            <div className="text-[11px] text-slate-500">{ds.desc}</div>
-                          </div>
-                          <div>
-                            <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.varLabel}</div>
-                            <code className="font-mono text-[10px] bg-white border border-slate-200 px-1.5 py-0.5 rounded block text-slate-700 leading-relaxed break-all">
-                              {ds.vars}
-                            </code>
-                          </div>
-                          <div>
-                            <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.roleLabel}</div>
-                            <div className="text-[11px] text-slate-500">{ds.role}</div>
-                          </div>
-                        </div>
-                      ))}
-                      <div className="font-mono text-[10px] text-slate-400 mt-2">{tx.datasetsNote}</div>
-                    </div>
-                  )}
-
-                  {/* Tab: Citation */}
-                  {activeTab === 'cite' && (
-                    <div>
-                      <div className="flex gap-2 mb-3">
-                        {(['apa', 'bib'] as const).map((ct) => (
-                          <button
-                            key={ct}
-                            onClick={() => setCiteType(ct)}
-                            className="font-mono text-[11px] px-3 py-1 rounded border font-semibold transition-colors cursor-pointer"
-                            style={citeType === ct
-                              ? { color: GREEN, borderColor: GREEN, backgroundColor: `${GREEN}15` }
-                              : { color: '#94a3b8', borderColor: '#e2e8f0' }}
-                          >
-                            {ct === 'apa' ? 'APA' : 'BibTeX'}
-                          </button>
-                        ))}
-                      </div>
-
-                      <div className={`bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-xs text-slate-600 leading-relaxed mb-3${citeType === 'bib' ? ' whitespace-pre-wrap break-all' : ''}`}>
-                        {citeType === 'apa' ? CITE_APA : CITE_BIBTEX}
-                      </div>
-                      <button onClick={citeType === 'apa' ? copyApa : copyBibtex} className="font-mono text-xs font-bold border rounded px-3 py-1 transition-colors cursor-pointer"
-                        style={{ color: GREEN, borderColor: GREEN, backgroundColor: 'transparent' }}
-                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${GREEN}10`)}
-                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>
-                        {citeType === 'apa' ? tx.copyCiteApa : tx.copyCiteBib}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* PAPER 2 — In Progress */}
-          {(selectedPaper === 'all' || selectedPaper === 'paper-2') && (
-            <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-7 md:p-8 mb-4 shadow-sm transition-all hover:shadow-md">
-              <div className="flex justify-between items-start gap-4 mb-4">
+            {/* Top Badge Row */}
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+              <div className="flex gap-2 flex-wrap">
                 <span className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-1 rounded-full font-bold border"
-                  style={{ backgroundColor: '#fef9ee', color: AMBER, borderColor: `${AMBER}40` }}>
-                  {tx.inProgress}
+                  style={{ backgroundColor: '#e8f5ee', color: GREEN, borderColor: `${GREEN}40` }}>
+                  {tx.submitted}
                 </span>
-                <span className="font-mono text-xs text-slate-400">2026</span>
+                <span className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-1 rounded-full font-semibold border"
+                  style={{ backgroundColor: `${GREEN}15`, color: GREEN, borderColor: `${GREEN}30` }}>
+                  IDSOL 2026 · ETO
+                </span>
               </div>
-              <div className="text-lg md:text-xl font-bold text-slate-700 mb-1.5">{tx.paper2Title}</div>
-              <div className="text-xs md:text-sm text-slate-500 mb-4">{tx.paper2Team}</div>
-              <hr className="border-t border-slate-100 my-4" />
-              <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] text-slate-500 mb-5">
-                {[tx.paper2Tag1, tx.paper2Tag2, tx.paper2Tag3].map((t) => (
-                  <span key={t} className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: AMBER }} />{t}
-                  </span>
-                ))}
-              </div>
-              <button disabled className="px-4 py-2 rounded-md text-xs font-medium border cursor-not-allowed text-slate-400 border-slate-200 bg-slate-50">
-                {tx.paper2Btn}
+              <span className="font-mono text-xs text-slate-400">2026</span>
+            </div>
+
+            {/* Title & Authors */}
+            <h2 className="text-lg md:text-xl font-bold leading-snug tracking-tight text-slate-800 mb-1.5">
+              {PAPER_TITLE}
+            </h2>
+            <div className="text-xs md:text-sm text-slate-500 mb-4 font-normal">
+              Phạm Duy Long · Nguyễn Đức Anh · Đỗ Nhật Quang
+            </div>
+
+            <hr className="border-t border-slate-100 my-4" />
+
+            {/* Meta Info */}
+            <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] text-slate-500 mb-5 font-medium">
+              {['Vietnam', 'Baseline · Logistic Regression · Random Forest', 'Hansen · SRTM · CHIRPS · Sentinel-2'].map((m) => (
+                <span key={m} className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: YELLOW }} />
+                  {m}
+                </span>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-2.5 items-center">
+              <button
+                onClick={() => setPaper1Expanded(prev => !prev)}
+                className="px-4 py-2 rounded-md text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors"
+                style={{ backgroundColor: YELLOW, color: '#003822' }}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#ffe380')}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = YELLOW)}
+              >
+                {paper1Expanded ? tx.btnToggleHide : tx.btnToggleShow}
+              </button>
+
+              <a
+                href="/papers/VIGIL_IDSOL2026_Whitepaper.pdf"
+                download
+                className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
+              >
+                {tx.btnWhitepaper}
+              </a>
+
+              <a
+                href="/papers/VIGIL_IDSOL2026_Poster.pdf"
+                download
+                className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
+              >
+                {tx.btnPoster}
+              </a>
+
+              <a
+                href="https://github.com/pdlong-09/deforestation-risk-gialai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-md text-xs font-semibold border inline-flex items-center gap-1.5 transition-colors text-slate-700 hover:text-slate-900 border-slate-200 hover:border-slate-400 bg-white"
+              >
+                {tx.btnCode}
+              </a>
+
+              <button
+                onClick={copyBibtex}
+                className="px-3 py-2 rounded-md text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+              >
+                {tx.btnCite}
               </button>
             </div>
-          )}
+
+            {/* EXPAND PANEL */}
+            {paper1Expanded && (
+              <div className="mt-5 border-t border-slate-100 pt-5">
+                {/* Tabs */}
+                <div className="flex border-b border-slate-100 gap-0 mb-5 overflow-x-auto">
+                  {(['abstract', 'findings', 'method', 'data', 'cite'] as const).map((tId) => (
+                    <button
+                      key={tId}
+                      onClick={() => setActiveTab(tId)}
+                      className={`px-4 py-2 text-xs md:text-sm font-semibold transition-colors border-b-2 whitespace-nowrap cursor-pointer bg-transparent`}
+                      style={activeTab === tId
+                        ? { color: GREEN, borderColor: GREEN }
+                        : { color: '#94a3b8', borderColor: 'transparent' }}
+                    >
+                      {tId === 'abstract' && tx.tabAbstract}
+                      {tId === 'findings' && tx.tabFindings}
+                      {tId === 'method' && tx.tabMethod}
+                      {tId === 'data' && tx.tabData}
+                      {tId === 'cite' && tx.tabCite}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Tab: Abstract */}
+                {activeTab === 'abstract' && (
+                  <div>
+                    <p className="text-slate-600 text-sm leading-[1.8] max-w-[700px] mb-4">
+                      {isVi ? tx.abstractVI : tx.abstractEN}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {['deforestation', 'Vietnam · Gia Lai', isVi ? 'lập bản đồ rủi ro' : 'risk mapping', isVi ? 'mô hình lưới ô vuông' : 'grid-based modeling',
+                        isVi ? 'học máy có thể giải thích' : 'interpretable machine learning', 'Random Forest', 'Sentinel-2', 'Hansen GFC'
+                      ].map((tag) => (
+                        <span key={tag} className="font-mono text-[10px] border px-2.5 py-1 rounded-full font-medium"
+                          style={{ color: GREEN, backgroundColor: `${GREEN}10`, borderColor: `${GREEN}30` }}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab: Results */}
+                {activeTab === 'findings' && (
+                  <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                      {[
+                        { val: '0.942', label: `AUC · Random Forest\n${tx.internalSplit}`, color: GREEN },
+                        { val: '0.767', label: `AUC · ${isVi ? 'Kiểm tra chuyển vùng' : 'Transfer test'}\nK'Bang → Mang Yang`, color: GREEN },
+                        { val: '19.0%', label: `Capture@10%\n${isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}`, color: AMBER },
+                      ].map((s, i) => (
+                        <div key={i} className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+                          <div className="text-2xl font-bold leading-none mb-1" style={{ color: s.color }}>{s.val}</div>
+                          <div className="text-[11px] text-slate-500 leading-tight whitespace-pre-line">{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="font-mono text-[10px] tracking-[0.08em] uppercase mb-2 font-bold" style={{ color: GREEN }}>
+                      {isVi ? 'Hiệu suất mô hình (Bảng 3)' : 'Model Performance (Table 3)'}
+                    </div>
+                    <div className="overflow-x-auto rounded-lg border border-slate-200 mb-3">
+                      <table className="w-full text-left text-xs min-w-[540px]">
+                        <thead className="bg-slate-50 font-mono text-[10px] uppercase border-b border-slate-200" style={{ color: GREEN }}>
+                          <tr>
+                            <th className="p-2.5">{isVi ? 'Kịch bản' : 'Scenario'}</th>
+                            <th className="p-2.5">{isVi ? 'Mô hình' : 'Model'}</th>
+                            <th className="p-2.5">AUC</th>
+                            <th className="p-2.5">F1</th>
+                            <th className="p-2.5">Capture@5%</th>
+                            <th className="p-2.5">Capture@10%</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-600">
+                          <tr className="opacity-50">
+                            <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
+                            <td className="p-2.5">{isVi ? 'Tham chiếu' : 'Baseline'}</td>
+                            <td className="p-2.5">0.504</td><td className="p-2.5">0.491</td>
+                            <td className="p-2.5">7.7%</td><td className="p-2.5">12.9%</td>
+                          </tr>
+                          <tr>
+                            <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
+                            <td className="p-2.5">{isVi ? 'Hồi quy Logistic' : 'Logistic Reg.'}</td>
+                            <td className="p-2.5">0.931</td><td className="p-2.5">0.881</td>
+                            <td className="p-2.5">9.5%</td>
+                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>19.0%</td>
+                          </tr>
+                          <tr style={{ backgroundColor: `${GREEN}08` }}>
+                            <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
+                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>Random Forest</td>
+                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>0.942</td>
+                            <td className="p-2.5">0.878</td><td className="p-2.5">9.2%</td><td className="p-2.5">18.4%</td>
+                          </tr>
+                          <tr className="opacity-50">
+                            <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
+                            <td className="p-2.5">{isVi ? 'Tham chiếu' : 'Baseline'}</td>
+                            <td className="p-2.5">0.376</td><td className="p-2.5">0.654</td>
+                            <td className="p-2.5">2.8%</td><td className="p-2.5">5.9%</td>
+                          </tr>
+                          <tr>
+                            <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
+                            <td className="p-2.5">{isVi ? 'Hồi quy Logistic' : 'Logistic Reg.'}</td>
+                            <td className="p-2.5">0.743</td><td className="p-2.5">0.666</td>
+                            <td className="p-2.5">8.8%</td><td className="p-2.5">17.0%</td>
+                          </tr>
+                          <tr style={{ backgroundColor: `${GREEN}08` }}>
+                            <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
+                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>Random Forest</td>
+                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>0.767</td>
+                            <td className="p-2.5">0.671</td><td className="p-2.5">7.5%</td><td className="p-2.5">14.5%</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 leading-relaxed">
+                      {tx.notableText}
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab: Methodology */}
+                {activeTab === 'method' && (
+                  <div className="space-y-5">
+                    {[
+                      { num: '01', title: tx.step01Title, body: tx.step01Desc },
+                      { num: '02', title: tx.step02Title, body: tx.step02Desc },
+                    ].map((s) => (
+                      <div key={s.num}>
+                        <div className="flex items-center gap-2.5 mb-2">
+                          <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
+                            style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>{s.num}</span>
+                          <span className="text-sm font-semibold text-slate-800">{s.title}</span>
+                        </div>
+                        <p className="text-xs text-slate-600 leading-relaxed">{s.body}</p>
+                      </div>
+                    ))}
+
+                    <div>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
+                          style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>03</span>
+                        <span className="text-sm font-semibold text-slate-800">{tx.step03Title}</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.baselineLabel}</div>
+                          <div className="text-xs font-medium text-slate-800 mb-1">{isVi ? 'Điểm rủi ro' : 'Risk Score'}</div>
+                          <div className="text-[11px] text-slate-500">{tx.baselineDesc}</div>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.interpLabel}</div>
+                          <div className="text-xs font-medium text-slate-800 mb-1">{isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}</div>
+                          <div className="text-[11px] text-slate-500">{tx.interpDesc}</div>
+                        </div>
+                        <div className="rounded-lg p-3 border-2" style={{ backgroundColor: `${GREEN}08`, borderColor: `${GREEN}50` }}>
+                          <div className="font-mono text-[10px] font-bold mb-1" style={{ color: GREEN }}>{tx.bestLabel}</div>
+                          <div className="text-xs font-medium text-slate-800 mb-1">Random Forest</div>
+                          <div className="text-[11px] text-slate-600">{tx.bestDesc}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
+                          style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>04</span>
+                        <span className="text-sm font-semibold text-slate-800">{tx.step04Title}</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <div className="text-xs font-medium text-slate-800 mb-1">{tx.splitTitle}</div>
+                          <div className="text-[11px] text-slate-500">{tx.splitDesc}</div>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <div className="text-xs font-medium text-slate-800 mb-1">{tx.transferTitle}</div>
+                          <div className="text-[11px] text-slate-500">{tx.transferDesc}</div>
+                        </div>
+                      </div>
+                      <div className="font-mono text-[11px] text-slate-500">{tx.metricsLabel}</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab: Datasets */}
+                {activeTab === 'data' && (
+                  <div className="space-y-2 mb-3">
+                    {datasets.map((ds, idx) => (
+                      <div key={idx} className="bg-slate-50 border border-slate-200 rounded-lg p-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+                        <div>
+                          <div className="text-xs font-semibold text-slate-800 mb-0.5">{ds.name}</div>
+                          <div className="font-mono text-[10px] font-bold mb-1" style={{ color: GREEN }}>{ds.res}</div>
+                          <div className="text-[11px] text-slate-500">{ds.desc}</div>
+                        </div>
+                        <div>
+                          <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.varLabel}</div>
+                          <code className="font-mono text-[10px] bg-white border border-slate-200 px-1.5 py-0.5 rounded block text-slate-700 leading-relaxed break-all">
+                            {ds.vars}
+                          </code>
+                        </div>
+                        <div>
+                          <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.roleLabel}</div>
+                          <div className="text-[11px] text-slate-500">{ds.role}</div>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="font-mono text-[10px] text-slate-400 mt-2">{tx.datasetsNote}</div>
+                  </div>
+                )}
+
+                {/* Tab: Citation */}
+                {activeTab === 'cite' && (
+                  <div>
+                    <div className="flex gap-2 mb-3">
+                      {(['apa', 'bib'] as const).map((ct) => (
+                        <button
+                          key={ct}
+                          onClick={() => setCiteType(ct)}
+                          className="font-mono text-[11px] px-3 py-1 rounded border font-semibold transition-colors cursor-pointer"
+                          style={citeType === ct
+                            ? { color: GREEN, borderColor: GREEN, backgroundColor: `${GREEN}15` }
+                            : { color: '#94a3b8', borderColor: '#e2e8f0' }}
+                        >
+                          {ct === 'apa' ? 'APA' : 'BibTeX'}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className={`bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-xs text-slate-600 leading-relaxed mb-3${citeType === 'bib' ? ' whitespace-pre-wrap break-all' : ''}`}>
+                      {citeType === 'apa' ? CITE_APA : CITE_BIBTEX}
+                    </div>
+                    <button onClick={citeType === 'apa' ? copyApa : copyBibtex} className="font-mono text-xs font-bold border rounded px-3 py-1 transition-colors cursor-pointer"
+                      style={{ color: GREEN, borderColor: GREEN, backgroundColor: 'transparent' }}
+                      onMouseEnter={e => (e.currentTarget.style.backgroundColor = `${GREEN}10`)}
+                      onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}>
+                      {citeType === 'apa' ? tx.copyCiteApa : tx.copyCiteBib}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </section>
 
         {/* Research Roadmap */}
