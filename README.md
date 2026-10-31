@@ -7,78 +7,76 @@
 [![MapLibre](https://img.shields.io/badge/Map-MapLibre%20GL%20JS-blue)](https://maplibre.org/)
 [![Docker](https://img.shields.io/badge/Deployment-Docker%20Compose-2496ED?logo=docker)](https://www.docker.com/)
 
-**Vigil Green GIS** (Hệ thống Cảnh báo Nguy cơ Mất rừng Tỉnh Gia Lai) là một giải pháp Web GIS toàn diện kết hợp **Mô hình Machine Learning (AI)** dự báo rủi ro tàn phá rừng ở độ phân giải 1km x 1km với **Hệ thống Báo cáo Thực địa Cộng đồng (Crowdsourced Field Reporting)** theo thời gian thực.
+**Vigil Green GIS** (the Gia Lai Province deforestation-risk warning system) is a web GIS platform that combines a **machine-learning model** predicting deforestation risk on a 1 km × 1 km grid with a **crowdsourced field-reporting system**.
 
-> 💡 **Sứ mệnh Dự án:** *VIGIL tích hợp dữ liệu ảnh vệ tinh, trí tuệ nhân tạo (AI) cùng khảo sát thực địa nhằm phát hiện sớm đồng thời trực quan hóa các nguy cơ mất rừng trên bản đồ, từ đó thúc đẩy hành động bảo tồn nhanh chóng, hiệu quả hơn tại Việt Nam và trên toàn cầu.*
+> 💡 **Mission:** *VIGIL combines satellite data, AI and field surveys to detect and map deforestation risk early, so conservation action in Vietnam and beyond can be faster and better targeted.*
 
-- 🌐 **Website:** [www.vigil.green](https://www.vigil.green/)
-- 📄 **Hồ sơ dự thi IDSOL 2026 — ETO:** [Whitepaper](eto-competition/VIGIL_IDSOL2026_Whitepaper.pdf) · [Poster](eto-competition/VIGIL_IDSOL2026_Poster.pdf) · [Pitch deck](eto-competition/VIGIL_IDSOL2026_Pitch_Deck.pdf) — Phạm Duy Long, Nguyễn Đức Anh, Đỗ Nhật Quang (2026)
+- 🌐 **Website:** [www.vigil.green](https://www.vigil.green/) (Vietnamese and English)
+- 📄 **IDSOL 2026 — ETO submission:** [Whitepaper](eto-competition/VIGIL_IDSOL2026_Whitepaper.pdf) · [Poster](eto-competition/VIGIL_IDSOL2026_Poster.pdf) · [Pitch deck](eto-competition/VIGIL_IDSOL2026_Pitch_Deck.pdf) — Pham Duy Long, Nguyen Duc Anh, Do Nhat Quang (2026)
 
 ---
 
-## 📋 Mục Lục
-1. [Giới Thiệu Tổng Quan](#-giới-thiệu-tổng-quan)
-2. [Tính Năng Cốt Lõi](#-tính-năng-cốt-lõi)
-3. [Kiến Trúc Hệ Thống & Luồng Dữ Liệu](#-kiến-trúc-hệ-thống--luồng-dữ-liệu)
-4. [Công Nghệ Sử Dụng (Tech Stack)](#-công-nghệ-sử-dụng-tech-stack)
-5. [Cấu Trúc Thư Mục](#-cấu-trúc-thư-mục)
-6. [Hướng Dẫn Cài Đặt & Khởi Chạy](#-hướng-dẫn-cài-đặt--khởi-chạy)
-7. [Cấu Hình Biến Môi Trường](#-cấu-hình-biến-môi-trường)
-8. [Tóm Tắt API Endpoints](#-tóm-tắt-api-endpoints)
-9. [Chỉ Mục Tài Liệu Kỹ Thuật (Docs)](#-chỉ-mục-tài-liệu-kỹ-thuật-docs)
+## 📋 Contents
+1. [Overview](#-overview)
+2. [Core Features](#-core-features)
+3. [System Architecture & Data Flow](#-system-architecture--data-flow)
+4. [Tech Stack](#-tech-stack)
+5. [Repository Layout](#-repository-layout)
+6. [Installation & Running](#-installation--running)
+7. [Environment Variables](#-environment-variables)
+8. [API Endpoints](#-api-endpoints)
+9. [Technical Documentation](#-technical-documentation)
 10. [ETO Competition Resources](#-eto-competition-resources)
 
 ---
 
-## 📌 Giới Thiệu Tổng Quan
+## 📌 Overview
 
-**VIGIL** tích hợp dữ liệu ảnh vệ tinh, trí tuệ nhân tạo (AI) cùng khảo sát thực địa nhằm phát hiện sớm đồng thời trực quan hóa các nguy cơ mất rừng trên bản đồ, từ đó thúc đẩy hành động bảo tồn nhanh chóng, hiệu quả hơn tại Việt Nam và trên toàn cầu.
+Deforestation is one of the most pressing environmental problems in Gia Lai Province. Monitoring today is mostly reactive: forest loss is recorded only after the trees are gone. **Vigil Green GIS** addresses this by:
 
-Tàn phá rừng là một trong những thách thức môi trường cấp thiết tại Tỉnh Gia Lai. Phương pháp thống kê truyền thống thường thụ động (chỉ ghi nhận khi rừng đã bị chặt phá). **Vigil Green GIS** được xây dựng nhằm giải quyết bài toán này bằng cách:
-
-1. **Chuyển từ Giám sát Thụ động sang Dự báo Chủ động (Proactive Monitoring):** Sử dụng mô hình Machine Learning tích hợp dữ liệu vệ tinh đa nguồn (Hansen GFW, NASA SRTM, CHIRPS, OpenStreetMap) để dự báo sớm các khu vực rừng có rủi ro cao ở quy mô lưới 1km x 1km.
-2. **Kênh Đóng góp Cộng đồng (Crowdsourcing Field Reports):** Cho phép người dân, lực lượng kiểm lâm gửi báo cáo thực địa trực tiếp từ bản đồ kèm tọa độ GPS và hình ảnh chụp tại hiện trường.
-3. **Hiệu quả Tuần tra (Capture Rate Top 5%):** Định hướng lực lượng kiểm lâm tập trung nguồn lực vào **Top 5%** khu vực có nguy cơ cao nhất thay vì phải dàn trải tuần tra hàng triệu hecta rừng.
+1. **Moving from reactive monitoring to proactive prediction:** a machine-learning model built on four public datasets (Hansen Global Forest Change, NASA SRTM, CHIRPS rainfall and Sentinel-2) ranks forest areas by deforestation risk on a 1 km × 1 km grid.
+2. **A crowdsourced reporting channel:** residents and forest rangers can file field reports straight from the map, with GPS coordinates and photos taken on site.
+3. **Patrol efficiency (capture rate in the top 5%):** rangers can focus their limited resources on the **top 5%** highest-risk cells first instead of spreading patrols across the whole forest.
 
 ---
 
-## ✨ Tính Năng Cốt Lõi
+## ✨ Core Features
 
-### 🗺️ 1. Bản Đồ Tương Tác Đa Nền (Web GIS Engine)
-- Render dữ liệu địa hình và lớp phủ rủi ro mất rừng mượt mà ở tốc độ **60 FPS** với **MapLibre GL JS** (mã nguồn mở).
-- Hỗ trợ chuyển đổi giao diện linh hoạt giữa các chế độ: `Dark Mode` (Tối ưu tương phản), `Light Mode` và `Satellite` (Ảnh vệ tinh).
-- Hiển thị đồng thời hơn **6,000 ô lưới không gian (cells)** cùng thuộc tính địa lý sinh thái.
+### 🗺️ 1. Interactive Multi-Basemap Map (Web GIS Engine)
+- Smooth **60 FPS** rendering of terrain and deforestation-risk layers with the open-source **MapLibre GL JS**.
+- Switchable basemaps: `Dark Mode` (high contrast), `Light Mode` and `Satellite`.
+- More than **6,000 grid cells** displayed at once, each with its geographic and ecological attributes.
 
-### 🎛️ 2. Bộ Lọc Động Đa Tiêu Chí Real-time (Multi-Criteria Filter)
-- **Time Slider (2001 - 2024):** Theo dõi lịch sử và diễn biến mất rừng qua các năm.
-- **4 Thanh trượt Địa hình & Khí hậu:**
-  - **Slope (Độ dốc):** Lọc theo độ dốc địa hình (°).
-  - **Elevation (Độ cao):** Lọc theo độ cao so với mực nước biển (m).
-  - **Tree Cover 2000 (Độ che phủ):** Lọc theo độ che phủ rừng ban đầu (%).
-  - **Annual Rainfall (Lượng mưa):** Lọc theo lượng mưa trung bình hàng năm (mm).
-- Phản hồi sinh thái học tức thì (Client-side filtering) trên trình duyệt không bị trễ.
+### 🎛️ 2. Real-Time Multi-Criteria Filters
+- **Time slider (2001–2024):** follow the history of forest loss year by year.
+- **Four terrain and climate sliders:**
+  - **Slope** (°)
+  - **Elevation** above sea level (m)
+  - **Tree Cover 2000**, the baseline forest cover (%)
+  - **Annual Rainfall**, mean annual precipitation (mm)
+- Filtering runs client-side in the browser, so the map responds instantly.
 
-### 📸 3. Báo Cáo Thực Địa Cộng Đồng (Crowdsourcing Field Reporting)
-- **Click-to-Report:** Nhấp trực tiếp vào bất kỳ vị trí nào trên bản đồ để mở Form gửi báo cáo.
-- **Upload Ảnh & Ghi chú:** Đính kèm hình ảnh hiện trường (`.jpg`, `.png` <= 5MB) và nhận xét thực địa.
-- **Mã hóa IP & Bảo mật:** Sử dụng thuật toán `SHA-256` kết hợp `Salt secret` băm mã hóa IP người dùng, bảo vệ danh tính 100% nhưng vẫn ngăn chặn hành vi spam (Rate limiting: Tối đa 3 báo cáo / 10 phút / IP).
-- **Trực quan hóa Marker:** Báo cáo sau khi duyệt được lưu vào **PostGIS** và hiển thị tức thì dưới dạng Marker tương tác có Popup thông tin.
+### 📸 3. Crowdsourced Field Reporting
+- **Click-to-report:** click anywhere on the map to open the report form.
+- **Photo & notes upload:** attach on-site photos (`.jpg`, `.png`, ≤ 5 MB) and field comments.
+- **IP hashing & privacy:** reporter IPs are salted and hashed with `SHA-256` rather than stored in plain text, and submissions are rate-limited (at most 3 reports per 10 minutes per IP) to block spam.
+- **Map markers:** approved reports are stored in **PostGIS** and appear immediately as interactive markers with an info popup.
 
-### 🧠 4. Tích Hợp Mô Hình AI / Machine Learning
-- So sánh điểm tham chiếu (z-score) với **Hồi quy Logistic** và **Random Forest** trên lưới 1 km. Trên tập chia sẵn (1.212 ô kiểm tra), Random Forest đạt **AUC = 0.861**, Hồi quy Logistic đạt **AUC = 0.817** (whitepaper, Bảng II(A)).
-- **Area Transfer Validation:** Mô hình được huấn luyện 100% tại Huyện K'Bang và kiểm thử "dự đoán mù" tại Huyện Mang Yang. AUC giảm còn **0.589** (Logistic) và **0.535** (Random Forest) do khác biệt địa lý (Bảng II(B)); mô hình đơn giản chuyển vùng tốt hơn. Mở rộng ra tỉnh khác cần kiểm chứng lại bằng dữ liệu địa phương.
-- Bản đồ trên web dùng mô hình huấn luyện lại trên toàn bộ 6.000 ô, nên là lớp **xếp hạng ưu tiên**, không phải thước đo độ chính xác.
+### 🧠 4. Machine-Learning Model
+- A baseline score (z-score) is compared with **logistic regression** and **random forest** on the 1 km grid. On the provided split (1,212 test cells), random forest reaches **AUC = 0.861** and logistic regression **AUC = 0.817** (whitepaper, Table II(A)).
+- **Area transfer validation:** the model is trained entirely on K'Bang District and tested "blind" on Mang Yang District. AUC drops to **0.589** (logistic) and **0.535** (random forest) because of geographic differences (Table II(B)); the simpler model transfers better. Extending to other provinces requires local re-validation.
+- The web map uses a model refitted on all 6,000 cells, so it is a **prioritisation layer**, not an accuracy measure.
 
 ---
 
-## 🏗️ Kiến Trúc Hệ Thống & Luồng Dữ Liệu
+## 🏗️ System Architecture & Data Flow
 
-Hệ thống được thiết kế theo kiến trúc **Client-Server** kết hợp **Spatial Database** hiện đại:
+The system follows a **client–server** architecture with a **spatial database**:
 
 ```mermaid
 graph TD
     %% Client Tier
-    subgraph Frontend [Client / Trình duyệt]
+    subgraph Frontend [Client / Browser]
         UI[Next.js 16 UI & TailwindCSS]
         Map[MapLibre GL JS Map Engine]
         UI <--> Map
@@ -94,14 +92,14 @@ graph TD
     end
 
     %% Data Tier
-    subgraph Database [Database Spatial]
+    subgraph Database [Spatial Database]
         DB[(PostgreSQL + PostGIS Extension)]
     end
 
     %% Data Pipeline Tier
     subgraph DataPipeline [Data Pipeline ETL]
         ETL[GeoPandas / Python]
-        CSV[(Dữ liệu thô CSV/ML)]
+        CSV[(Raw CSV / ML output)]
         GeoJSON[(grid_data.geojson)]
         CSV --> ETL
         ETL --> GeoJSON
@@ -116,112 +114,116 @@ graph TD
 
 ---
 
-## 🛠️ Công Nghệ Sử Dụng (Tech Stack)
+## 🛠️ Tech Stack
 
-| Phân hệ | Công nghệ / Thư viện | Phiên bản | Vai trò |
+| Layer | Technology / Library | Version | Role |
 | :--- | :--- | :--- | :--- |
-| **Frontend** | [Next.js](https://nextjs.org/) | 16.x | Framework React full-stack rendering giao diện |
-| | [TypeScript](https://www.typescriptlang.org/) | 5.x | Đảm bảo an toàn kiểu dữ liệu |
-| | [MapLibre GL JS](https://maplibre.org/) | 5.x | Thư viện Web GIS hiển thị bản đồ vector/heatmap |
-| | [TailwindCSS](https://tailwindcss.com/) | 4.x | Styling giao diện hiện đại & responsive |
-| | [Framer Motion](https://www.framer.com/motion/) | 12.x | Hiệu ứng chuyển động & Micro-animations |
-| **Backend** | [Python](https://www.python.org/) | 3.9+ | Ngôn ngữ phát triển backend |
-| | [FastAPI](https://fastapi.tiangolo.com/) | Latest | High-performance RESTful API Framework |
-| | [SQLAlchemy](https://www.sqlalchemy.org/) | 2.x | ORM tương tác CSDL quan hệ |
-| | [GeoAlchemy2](https://geoalchemy2.readthedocs.io/) | Latest | Xử lý các kiểu dữ liệu không gian PostGIS |
-| | [Pillow](https://python-pillow.org/) | Latest | Tiền xử lý & resize hình ảnh upload |
-| **Database** | [PostgreSQL](https://www.postgresql.org/) | 15.x | Cơ sở dữ liệu quan hệ |
-| | [PostGIS](https://postgis.net/) | 3.3+ | Extension mở rộng lưu trữ tọa độ không gian (SRID 4326) |
-| **Data Pipeline**| [GeoPandas](https://geopandas.org/) / Shapely | Latest | Chuyển đổi dữ liệu CSV dự báo AI thành GeoJSON tĩnh |
-| **DevOps** | [Docker](https://www.docker.com/) & Docker Compose | Latest | Đóng gói container hóa toàn bộ hệ thống |
-| | [PM2](https://pm2.keymetrics.io/) & Nginx | Latest | Khởi chạy ngầm & Reverse Proxy trên môi trường Production |
+| **Frontend** | [Next.js](https://nextjs.org/) | 16.x | Full-stack React framework rendering the UI |
+| | [TypeScript](https://www.typescriptlang.org/) | 5.x | Type safety |
+| | [MapLibre GL JS](https://maplibre.org/) | 5.x | Web GIS library for vector maps and heatmaps |
+| | [TailwindCSS](https://tailwindcss.com/) | 4.x | Modern, responsive styling |
+| | [Framer Motion](https://www.framer.com/motion/) | 12.x | Transitions and micro-animations |
+| **Backend** | [Python](https://www.python.org/) | 3.9+ | Backend language |
+| | [FastAPI](https://fastapi.tiangolo.com/) | Latest | High-performance REST API framework |
+| | [SQLAlchemy](https://www.sqlalchemy.org/) | 2.x | ORM for the relational database |
+| | [GeoAlchemy2](https://geoalchemy2.readthedocs.io/) | Latest | PostGIS spatial types |
+| | [Pillow](https://python-pillow.org/) | Latest | Pre-processing and resizing uploaded images |
+| **Database** | [PostgreSQL](https://www.postgresql.org/) | 15.x | Relational database |
+| | [PostGIS](https://postgis.net/) | 3.3+ | Spatial extension for coordinates (SRID 4326) |
+| **Data Pipeline**| [GeoPandas](https://geopandas.org/) / Shapely | Latest | Converts the model's CSV predictions into static GeoJSON |
+| **DevOps** | [Docker](https://www.docker.com/) & Docker Compose | Latest | Containerises the whole system |
+| | [PM2](https://pm2.keymetrics.io/) & Nginx | Latest | Background processes and reverse proxy in production |
 
 ---
 
-## 📂 Cấu Trúc Thư Mục
+## 📂 Repository Layout
 
 ```text
-web-gis/
-├── backend/                      # Mã nguồn Server API (Python FastAPI)
-│   ├── app/                      # Modules logic & routers
-│   ├── uploads/                  # Lưu trữ hình ảnh báo cáo thực địa
-│   ├── database.py               # Kết nối PostgreSQL / SQLAlchemy
-│   ├── main.py                   # Entry point FastAPI Server
-│   ├── models.py                 # Định nghĩa Database Schemas & PostGIS Geometry
-│   ├── schemas.py                # Pydantic Schemas validate dữ liệu API
-│   ├── Dockerfile                # Dockerfile cho Backend
-│   └── requirements.txt          # Danh sách thư viện Python
-├── frontend/                     # Mã nguồn Giao diện Web (Next.js 16)
-│   ├── public/                   # Thư mục chứa tài nguyên tĩnh
-│   │   └── data/                 # Chứa file grid_data.geojson hiển thị bản đồ
-│   ├── src/                      # Source code React components & pages
-│   │   ├── app/                  # Next.js App Router (Layouts, Pages, API routes)
-│   │   └── components/           # Components Map, Sidebar, Form, Controls
-│   ├── Dockerfile                # Dockerfile cho Frontend
-│   └── package.json              # Khai báo dependencies Frontend
-├── data-pipeline/                # Script ETL chuyển đổi dữ liệu
-│   └── csv_to_geojson.py         # Script Python biến đổi CSV -> GeoJSON tĩnh
-├── docker-images/                # Gói nén các Docker Image phục vụ deploy offline
-├── docs/                         # Thư mục Tài liệu Kỹ thuật Chi tiết
-│   ├── TRD_Architecture.md       # Kiến trúc hệ thống chi tiết
-│   ├── Technical_Requirements_Document.md # Yêu cầu kỹ thuật & API specs
-│   ├── Data_Flow.md              # Mô tả luồng dữ liệu & bộ lọc tương tác
-│   ├── ML_Evaluation_Methodology.md # Phương pháp luận & Đánh giá AI
-│   └── Runbook.md                # Hướng dẫn vận hành & triển khai chi tiết
-├── docker-compose.yml            # File cấu hình chạy Docker Compose (Development)
-└── README.md                     # Tài liệu tổng quan hệ thống (File này)
+vigil-green-gis/
+├── backend/                      # Server API (Python FastAPI)
+│   ├── tests/                    # API tests
+│   ├── uploads/                  # Field-report photos
+│   ├── auth.py                   # JWT login and admin checks
+│   ├── database.py               # PostgreSQL / SQLAlchemy connection
+│   ├── main.py                   # FastAPI entry point
+│   ├── models.py                 # Database models & PostGIS geometry
+│   ├── schemas.py                # Pydantic schemas validating API data
+│   ├── Dockerfile                # Backend image
+│   └── requirements.txt          # Python dependencies
+├── frontend/                     # Web UI (Next.js 16)
+│   ├── public/                   # Static assets
+│   │   ├── data/                 # GeoJSON layers shown on the map
+│   │   └── papers/               # Whitepaper and poster served at /papers/
+│   ├── src/                      # React components & pages
+│   │   ├── app/                  # Next.js App Router pages (home, about, map, publication, contact, admin)
+│   │   ├── components/           # Map, sidebar, forms, controls
+│   │   ├── context/              # Language (VI/EN) context
+│   │   └── locales/              # Vietnamese and English UI strings
+│   ├── Dockerfile                # Frontend image
+│   └── package.json              # Frontend dependencies
+├── data-pipeline/                # ETL scripts
+│   └── csv_to_geojson.py         # Converts CSV predictions to static GeoJSON
+├── docs/                         # Detailed technical documentation
+│   ├── TRD_Architecture.md       # System architecture
+│   ├── Technical_Requirements_Document.md # Technical requirements & API specs
+│   ├── Data_Flow.md              # Data flow and interactive filters
+│   ├── ML_Evaluation_Methodology.md # Model methodology & evaluation
+│   └── Runbook.md                # Operations & deployment guide
+├── eto-competition/              # IDSOL 2026 (ETO) whitepaper, poster and pitch deck
+├── docker-compose.yml            # Docker Compose setup (development)
+└── README.md                     # This file
 ```
 
 ---
 
-## ⚡ Hướng Dẫn Cài Đặt & Khởi Chạy
+## ⚡ Installation & Running
 
-### 🐳 Phương Pháp 1: Chạy bằng Docker Compose (Khuyến Nghị)
+### 🐳 Option 1: Docker Compose (recommended)
 
-Phương pháp này giúp tự động cài đặt cả Database PostgreSQL (PostGIS), Backend FastAPI và Frontend Next.js chỉ trong **1 dòng lệnh**:
+This sets up the PostgreSQL (PostGIS) database, the FastAPI backend and the Next.js frontend with **a single command**.
 
-#### Yêu cầu: Máy tính đã cài sẵn [Docker Engine](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/).
+#### Requirements: [Docker Engine](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/).
 
-1. **Clone repository:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/pdlong-09/vigil-green-gis.git
    cd vigil-green-gis
    ```
 
-2. **Khởi chạy toàn bộ hệ thống:**
+2. **Start the whole stack:**
    ```bash
    docker-compose up --build -d
    ```
 
-3. **Truy cập ứng dụng:**
-   - 🌐 **Website Frontend:** `http://localhost:3000`
-   - 📑 **API Documentation (Swagger UI):** `http://localhost:8000/docs`
-   - 🗄️ **Database PostGIS:** `localhost:5433` từ máy host, `db:5432` bên trong mạng Docker (`gialai_forest`)
+3. **Open the application:**
+   - 🌐 **Website frontend:** `http://localhost:3000`
+   - 📑 **API documentation (Swagger UI):** `http://localhost:8000/docs`
+   - 🗄️ **PostGIS database:** `localhost:5433` from the host, `db:5432` inside the Docker network (`gialai_forest`)
 
-4. **Dừng hệ thống:**
+4. **Stop the stack:**
    ```bash
    docker-compose down
    ```
 
 ---
 
-### 💻 Phương Pháp 2: Cài Đặt Thủ Công (Môi Trường Development)
+### 💻 Option 2: Manual Setup (development)
 
-#### 1. Chuẩn bị Cơ sở dữ liệu (PostgreSQL + PostGIS)
-- Tạo database tên `gialai_forest` trong PostgreSQL.
-- Kích hoạt extension PostGIS:
+#### 1. Prepare the database (PostgreSQL + PostGIS)
+- Create a database named `gialai_forest` in PostgreSQL.
+- Enable the PostGIS extension:
   ```sql
   CREATE EXTENSION IF NOT EXISTS postgis;
   ```
 
-#### 2. Tiền xử lý Dữ liệu Bản đồ (Data Pipeline)
-Chạy script để chuyển đổi file dữ liệu thô sang `.geojson`:
+#### 2. Pre-process the map data (data pipeline)
+Convert the raw data file to `.geojson`:
 ```bash
 python data-pipeline/csv_to_geojson.py
 ```
-*(File đầu ra `grid_data.geojson` sẽ tự động được ghi vào `frontend/public/data/`).*
+*(The output `grid_data.geojson` is written to `frontend/public/data/`.)*
 
-#### 3. Khởi chạy Backend (FastAPI)
+#### 3. Start the backend (FastAPI)
 ```bash
 cd backend
 python -m venv venv
@@ -230,56 +232,56 @@ python -m venv venv
 
 pip install -r requirements.txt
 
-# Tạo file .env
+# Create the .env file
 echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/gialai_forest" > .env
 echo "SALT_SECRET=my_super_secret_salt_2026" >> .env
 
-# Chạy server
+# Run the server
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-#### 4. Khởi chạy Frontend (Next.js)
+#### 4. Start the frontend (Next.js)
 ```bash
 cd ../frontend
 npm install
 
-# (Tùy chọn) Tạo file .env.local nếu đổi port
+# (Optional) create .env.local if the API runs on another port
 echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
 
 npm run dev
 ```
-Truy cập ứng dụng tại `http://localhost:3000`.
+Open the application at `http://localhost:3000`.
 
 ---
 
-### 🌐 Phương Pháp 3: Triển Khai Production (PM2 & Nginx)
+### 🌐 Option 3: Production Deployment (PM2 & Nginx)
 
-Trên Server Linux Production, sử dụng **PM2** để duy trì dịch vụ chạy ngầm 24/7 và **Nginx** làm Reverse Proxy:
+On a Linux production server, use **PM2** to keep the services running 24/7 and **Nginx** as the reverse proxy:
 
 ```bash
-# 1. Build Frontend
+# 1. Build the frontend
 cd frontend
 npm run build
 
-# 2. Cài đặt PM2 & Khởi chạy tiến trình
+# 2. Install PM2 and start the processes
 npm install -g pm2
 
-# Start Backend
+# Start the backend
 cd ../backend
 pm2 start "uvicorn main:app --host 127.0.0.1 --port 8000" --name "gialai-backend"
 
-# Start Frontend
+# Start the frontend
 cd ../frontend
 pm2 start npm --name "gialai-frontend" -- start
 
-# Lưu trạng thái tự khởi động cùng OS
+# Restart automatically with the OS
 pm2 save
 pm2 startup
 ```
 
 ---
 
-## ⚙️ Cấu Hình Biến Môi Trường
+## ⚙️ Environment Variables
 
 ### Backend (`backend/.env`)
 ```env
@@ -289,55 +291,55 @@ SECRET_KEY=your_jwt_secret_key
 ADMIN_PASSWORD=your_first_admin_password
 ```
 
-- `SECRET_KEY` ký JWT, `SALT_SECRET` là muối băm IP người báo cáo. Nếu bỏ trống, backend tự tạo giá trị ngẫu nhiên mỗi lần khởi động (phiên đăng nhập sẽ hết khi khởi động lại).
-- `ADMIN_PASSWORD` chỉ dùng khi tạo tài khoản `admin` lần đầu. Nếu bỏ trống, backend tạo mật khẩu ngẫu nhiên và in một lần vào log.
-- Tạo giá trị ngẫu nhiên: `python -c "import secrets; print(secrets.token_urlsafe(48))"`. Không commit các giá trị này.
+- `SECRET_KEY` signs the JWTs and `SALT_SECRET` salts the reporter IP hashes. If either is empty, the backend generates a random value at each start (logins then end when the server restarts).
+- `ADMIN_PASSWORD` is used only when the `admin` account is first created. If it is empty, the backend generates a random password and prints it once in the log.
+- To generate a random value: `python -c "import secrets; print(secrets.token_urlsafe(48))"`. Never commit these values.
 
-### Frontend (`frontend/.env.local` hoặc Docker `--build-arg`)
+### Frontend (`frontend/.env.local` or Docker `--build-arg`)
 ```env
-# LƯU Ý: Biến NEXT_PUBLIC_* trong Next.js được nhúng vào bundle lúc BUILD TIME.
-# Khi build Docker container, truyền qua build.args trong docker-compose.yml hoặc --build-arg
+# NOTE: Next.js embeds NEXT_PUBLIC_* variables into the bundle at BUILD TIME.
+# When building the Docker image, pass them via build.args in docker-compose.yml or --build-arg.
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ---
 
-## 📡 Tóm Tắt API Endpoints
+## 📡 API Endpoints
 
-FastAPI tự động tạo trang tài liệu tương tác đầy đủ tại **`http://localhost:8000/docs`**. Các endpoints chính bao gồm:
+FastAPI generates full interactive documentation at **`http://localhost:8000/docs`**. The main endpoints are:
 
-| Phương thức | Đường dẫn API | Mô tả | Authorization |
+| Method | API path | Description | Authorization |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/reports` | Tạo báo cáo thực địa mới (Tọa độ + Ảnh + Comment) | Public (Rate-limited) |
-| `GET` | `/api/reports` | Lấy danh sách tất cả các điểm báo cáo thực địa | Public |
-| `POST` | `/api/auth/register` | Đăng ký tài khoản người dùng mới | Public |
-| `POST` | `/api/auth/login` | Đăng nhập lấy JWT Bearer Token | Public |
-| `POST` | `/api/contact` | Gửi tin nhắn liên hệ hỗ trợ | Public |
-| `GET` | `/api/contact` | Lấy danh sách tin nhắn liên hệ | Admin only |
-| `GET` | `/api/about` | Lấy nội dung trang giới thiệu (CMS) | Public |
-| `POST` | `/api/about` | Cập nhật nội dung trang giới thiệu | Admin only |
+| `POST` | `/api/reports` | Create a field report (coordinates + photo + comment) | Public (rate-limited) |
+| `GET` | `/api/reports` | List all field reports | Public |
+| `POST` | `/api/auth/register` | Register a new user | Public |
+| `POST` | `/api/auth/login` | Log in and receive a JWT bearer token | Public |
+| `POST` | `/api/contact` | Send a contact message | Public |
+| `GET` | `/api/contact` | List contact messages | Admin only |
+| `GET` | `/api/about` | Get the About page content (CMS) | Public |
+| `POST` | `/api/about` | Update the About page content | Admin only |
 
 ---
 
-## 📚 Chỉ Mục Tài Liệu Kỹ Thuật (Docs)
+## 📚 Technical Documentation
 
-Hệ thống đi kèm bộ tài liệu kỹ thuật đầy đủ được lưu giữ tại thư mục [`docs/`](docs/):
+The [`docs/`](docs/) folder holds the full technical documentation:
 
-- 🏛️ **[TRD_Architecture.md](docs/TRD_Architecture.md):** Tổng quan kiến trúc hệ thống Client-Server, kiến trúc CSDL không gian và giải pháp cô lập mã nguồn.
-- 📋 **[Technical_Requirements_Document.md](docs/Technical_Requirements_Document.md):** Chi tiết yêu cầu chức năng (FR), yêu cầu phi chức năng (NFR), cấu trúc bảng PostgreSQL và chuẩn bảo mật.
-- 🔄 **[Data_Flow.md](docs/Data_Flow.md):** Chi tiết luồng dữ liệu tĩnh (AI GeoJSON) & động (Báo cáo thực địa), cơ chế lọc động 60 FPS.
-- 🧠 **[ML_Evaluation_Methodology.md](docs/ML_Evaluation_Methodology.md):** Phương pháp luận huấn luyện AI, kịch bản Area Transfer Validation và các chỉ số đánh giá (AUC, Cap@5%/10%).
-- 📖 **[Runbook.md](docs/Runbook.md):** Cẩm nang hướng dẫn cài đặt, vận hành, bảo trì và xử lý sự cố trong môi trường thực tế.
+- 🏛️ **[TRD_Architecture.md](docs/TRD_Architecture.md):** the client–server architecture, the spatial database design and how the code is isolated.
+- 📋 **[Technical_Requirements_Document.md](docs/Technical_Requirements_Document.md):** functional (FR) and non-functional (NFR) requirements, PostgreSQL table structure and security standards.
+- 🔄 **[Data_Flow.md](docs/Data_Flow.md):** the static (AI GeoJSON) and dynamic (field report) data flows and the 60 FPS filtering.
+- 🧠 **[ML_Evaluation_Methodology.md](docs/ML_Evaluation_Methodology.md):** model training methodology, the area-transfer validation and the evaluation metrics (AUC, Cap@5%/10%).
+- 📖 **[Runbook.md](docs/Runbook.md):** installation, operation, maintenance and troubleshooting in production.
 
 ---
 
 ## 🏆 ETO Competition Resources
 
-Nền tảng này được xây dựng để tham gia **IDSOL 2026 — Emerging Technologies Olympiads (ETO)**. Hồ sơ dự thi của đội VIGIL (Phạm Duy Long, Nguyễn Đức Anh, Đỗ Nhật Quang) nằm trong thư mục [`eto-competition/`](eto-competition/):
+This platform was built for **IDSOL 2026 — Emerging Technologies Olympiads (ETO)**. The VIGIL team's submission (Pham Duy Long, Nguyen Duc Anh, Do Nhat Quang) is in [`eto-competition/`](eto-competition/):
 
-- 📄 **[Whitepaper](eto-competition/VIGIL_IDSOL2026_Whitepaper.pdf):** bài viết 5 trang về pipeline, kết quả và lộ trình mở rộng toàn quốc.
-- 🖼️ **[Poster](eto-competition/VIGIL_IDSOL2026_Poster.pdf):** posterboard IDSOL26VN.
-- 🎤 **[Pitch deck](eto-competition/VIGIL_IDSOL2026_Pitch_Deck.pdf):** 26 slide thuyết trình, kèm kế hoạch kinh doanh.
+- 📄 **[Whitepaper](eto-competition/VIGIL_IDSOL2026_Whitepaper.pdf):** a 5-page paper on the pipeline, the results and the path to nationwide scale.
+- 🖼️ **[Poster](eto-competition/VIGIL_IDSOL2026_Poster.pdf):** the IDSOL26VN posterboard.
+- 🎤 **[Pitch deck](eto-competition/VIGIL_IDSOL2026_Pitch_Deck.pdf):** 26 presentation slides, including the business plan.
 
 ---
 *© 2026 Vigil Green GIS — Gia Lai Deforestation Risk Monitoring Platform.*
