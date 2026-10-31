@@ -1,97 +1,97 @@
-# Luồng Dữ Liệu & Hiển Thị (Data Flow Architecture)
+# Data Flow & Display Architecture
 
-Tài liệu này mô tả chi tiết luồng dữ liệu (Data Flow) của Hệ thống Web GIS Cảnh báo Mất rừng Gia Lai, từ lúc dữ liệu thô được tiếp nhận cho đến khi hiển thị và tương tác trên bản đồ (Frontend). Mục tiêu của tài liệu này là giúp nhóm dễ dàng kiểm chứng cơ chế hoạt động để tự tin trình bày trước hội đồng giám khảo cuộc thi.
+This document describes the data flow of the Gia Lai deforestation-warning Web GIS, from the moment raw data comes in to its display and interaction on the map (frontend). It is meant to help the team verify how the system works so it can present it confidently to the competition judges.
 
 ---
 
-## 1. Tổng Quan Luồng Dữ Liệu (High-Level Data Flow)
+## 1. High-Level Data Flow
 
-Hệ thống của chúng ta hoạt động với 2 luồng dữ liệu chính chạy song song và kết hợp trên giao diện bản đồ:
-- **Luồng 1 (Dữ liệu Tĩnh - Dự báo AI):** Dữ liệu phân tích nguy cơ mất rừng từ mô hình Machine Learning/thống kê (dạng CSV) được chuyển đổi và hiển thị lên bề mặt bản đồ.
-- **Luồng 2 (Dữ liệu Động - Crowdsourcing):** Dữ liệu thu thập từ người dùng (báo cáo thực địa, ảnh chụp) được gửi về máy chủ, lưu vào Database và trả lại lên bản đồ theo thời gian thực.
+The system runs two main data flows in parallel and combines them on the map:
+- **Flow 1 (static data — AI predictions):** deforestation-risk results from the machine-learning/statistical model (as CSV) are converted and drawn on the map.
+- **Flow 2 (dynamic data — crowdsourcing):** data from users (field reports, photos) is sent to the server, stored in the database and returned to the map in real time.
 
 ```mermaid
 sequenceDiagram
-    participant Model as Mô hình ML (CSV)
+    participant Model as ML model (CSV)
     participant Pipeline as Data Pipeline (ETL)
-    participant Map as Giao diện Web (MapLibre)
+    participant Map as Web UI (MapLibre)
     participant API as FastAPI Backend
     participant DB as PostgreSQL (PostGIS)
 
-    %% Luồng 1
-    Note over Model, Map: [Luồng 1] Dữ liệu Cảnh báo AI (Tĩnh)
-    Model->>Pipeline: File dữ liệu rừng gốc (.csv)
-    Pipeline->>Map: Sinh ra file Grid Data (.geojson) tĩnh
-    Map->>Map: Render Vector / Bản đồ nhiệt (Dự báo nguy cơ)
+    %% Flow 1
+    Note over Model, Map: [Flow 1] AI risk data (static)
+    Model->>Pipeline: Source forest data file (.csv)
+    Pipeline->>Map: Generates a static grid data file (.geojson)
+    Map->>Map: Renders vectors / heatmap (risk prediction)
 
-    %% Luồng 2
-    Note over Map, DB: [Luồng 2] Báo cáo Thực địa (Động)
-    Map->>API: Người dùng gửi báo cáo (Tọa độ + Ảnh)
-    API->>DB: Lưu tọa độ (Geometry) & Xử lý ẩn danh
-    DB-->>API: Phản hồi thành công
-    API-->>Map: Trả về trạng thái
-    Map->>API: GET /api/reports (Yêu cầu làm mới)
-    API->>DB: Truy vấn tọa độ PostGIS
-    DB-->>API: Danh sách báo cáo
-    API-->>Map: Render Marker Xanh lên bản đồ
+    %% Flow 2
+    Note over Map, DB: [Flow 2] Field reports (dynamic)
+    Map->>API: User submits a report (coordinates + photo)
+    API->>DB: Stores the coordinates (geometry) & anonymises
+    DB-->>API: Success
+    API-->>Map: Returns the status
+    Map->>API: GET /api/reports (refresh)
+    API->>DB: Queries PostGIS coordinates
+    DB-->>API: List of reports
+    API-->>Map: Renders green markers on the map
 ```
 
 ---
 
-## 2. Chi Tiết Luồng 1: Dữ liệu Dự Đoán Nguy Cơ (AI Analytics Flow)
+## 2. Flow 1 in Detail: Risk Prediction Data (AI Analytics Flow)
 
-Đây là giá trị cốt lõi của dự án dành cho cuộc thi. Việc hiển thị dữ liệu cảnh báo rừng được thực hiện tối ưu qua các bước:
+This is the core value of the project for the competition. The risk data is displayed efficiently in these steps:
 
-### Bước 2.1. Đầu vào (Input)
-Kết quả chạy từ mô hình Machine Learning được xuất ra dưới dạng bảng `.csv`. 
-Dữ liệu này chứa tọa độ (Vĩ độ, Kinh độ) và các thuộc tính liên đới tới rủi ro mất rừng:
-- **Elevation** (Độ cao)
-- **Slope** (Độ dốc)
-- **Tree Cover 2000** (Độ che phủ rừng)
-- **Annual Rainfall** (Lượng mưa trung bình)
-- Các chỉ số khác (NDVI, Loss Year...)
+### Step 2.1. Input
+The machine-learning model's results are exported as a `.csv` table.
+It contains coordinates (latitude, longitude) and the attributes linked to deforestation risk:
+- **Elevation**
+- **Slope**
+- **Tree Cover 2000** (forest cover)
+- **Annual Rainfall** (mean)
+- Other indicators (NDVI, loss year…)
 
-### Bước 2.2. Tiền xử lý (Data Pipeline)
-Hệ thống sử dụng Python script (`data-pipeline/csv_to_geojson.py`) để làm nhiệm vụ ETL (Extract, Transform, Load):
-1. **Extract:** Đọc tệp `.csv`.
-2. **Transform:** Chuyển đổi ma trận tọa độ thành các khối định dạng không gian (Geometry Points/Polygons). Đóng gói toàn bộ các cột thuộc tính vào `properties` của từng khối.
-3. **Load:** Lưu xuất thành tệp `grid_data.geojson` và đặt trực tiếp vào thư mục `public/data/` của Frontend để sẵn sàng được phục vụ (serve) nhanh nhất mà không phải qua Database.
+### Step 2.2. Pre-processing (data pipeline)
+A Python script (`data-pipeline/csv_to_geojson.py`) performs the ETL (extract, transform, load):
+1. **Extract:** read the `.csv` file.
+2. **Transform:** turn the coordinates into spatial features (geometry points/polygons) and pack every attribute column into each feature's `properties`.
+3. **Load:** write `grid_data.geojson` directly into the frontend's `public/data/` folder so it is served as fast as possible without going through the database.
 
-### Bước 2.3. Hiển thị & Tương tác (Frontend Visualization)
-Khi người dùng truy cập web:
-1. **Load Bản Đồ:** Next.js sẽ load thư viện `MapLibre GL JS` và tải file `.geojson` trên về trình duyệt.
-2. **Render Bản Đồ Cảnh Báo:** MapLibre sẽ vẽ dữ liệu lên màn hình theo các Layer (có thể là điểm - Circle Layer hoặc Heatmap) phụ thuộc vào thông số `Nguy cơ rủi ro`.
-3. **Bộ lọc tương tác (Realtime Filtering):** Đây là điểm "Ăn Tiền" của hệ thống. Người dùng sử dụng 4 thanh trượt (Sliders): *Độ dốc, Độ cao, Che phủ, Lượng mưa*.
-   - Mỗi khi kéo thanh trượt, một biểu thức lọc (`filterExpression`) được kích hoạt.
-   - MapLibre so sánh biểu thức này với `properties` của file GeoJSON ngay trên trình duyệt (Client-side) ở tốc độ 60 khung hình/giây.
-   - Lớp cảnh báo sẽ tự động biến mất/xuất hiện để lọc ra những khu vực "thỏa mãn" các điều kiện ngoại cảnh gây mất rừng.
-
----
-
-## 3. Chi Tiết Luồng 2: Dữ liệu Đóng góp Cộng đồng (Crowdsourcing Flow)
-
-Để minh chứng tính ứng dụng thực tế, người dùng (Kiểm lâm, người dân) có thể báo cáo khi thấy rừng bị chặt phá.
-
-### Bước 3.1. Gửi Báo Cáo
-1. Người dùng nhấp (click) vào bản đồ tại khu vực nghi ngờ bị tàn phá.
-2. Một Form điền thông tin hiện lên yêu cầu: Lời nhắn (Comment) & Ảnh chụp hiện trường (Image).
-3. Frontend dùng `FormData()` đóng gói dữ liệu và tọa độ gửi qua HTTP `POST /api/reports` đến Backend (FastAPI).
-
-### Bước 3.2. Xử lý tại Backend
-1. **Xử lý Ảnh:** FastAPI tiếp nhận và kiểm tra định dạng ảnh (chỉ nhận `png/jpg`), tự động tải và lưu tệp tĩnh vào thư mục `uploads/` trên máy chủ.
-2. **Bảo mật & Ẩn danh:** Địa chỉ IP của người gửi bị băm (Hash) một chiều trộn cùng `SALT` mật nhằm bảo vệ quyền riêng tư người báo cáo theo quy chuẩn bảo mật.
-3. **Lưu Không Gian (Spatial Storage):** Tọa độ Kinh độ, Vĩ độ được gói vào kiểu `WKTElement` và lưu xuống CSDL PostgreSQL (với Extension PostGIS).
-
-### Bước 3.3. Hiển thị Lại Lên Bản Đồ
-1. Ngay khi lưu thành công, Frontend tự động gửi một tín hiệu lấy lại dữ liệu mới (`GET /api/reports`).
-2. Backend truy vấn `PostGIS` để lấy danh sách toàn bộ báo cáo, giải mã `Geometry` ngược về kinh/vĩ độ, và gửi lại mảng dữ liệu.
-3. Frontend nhận dữ liệu, tạo ra các "Marker Cảnh Báo màu Xanh" ghim trực tiếp lên bản đồ.
-4. Khi Ban giám khảo/User nhấp vào Marker, một Popup sẽ mở ra hiển thị thời gian, Ảnh chụp và Comment của báo cáo đó.
+### Step 2.3. Display & interaction (frontend visualisation)
+When a user opens the site:
+1. **Map loading:** Next.js loads `MapLibre GL JS` and downloads the `.geojson` file to the browser.
+2. **Risk map rendering:** MapLibre draws the data as layers (a circle layer or a heatmap) driven by the risk score.
+3. **Interactive real-time filtering:** this is the system's showcase. The user moves four sliders: *slope, elevation, tree cover, rainfall*.
+   - Each slider move triggers a filter expression (`filterExpression`).
+   - MapLibre evaluates the expression against the GeoJSON `properties` right in the browser (client-side) at 60 frames per second.
+   - The risk layer hides or shows cells instantly, leaving the areas that meet the chosen environmental conditions.
 
 ---
 
-## 4. Tóm tắt Kiểm Chứng (Verification Checklist cho Cuộc thi)
-Để thuyết trình thuyết phục, nhóm nên kiểm chứng và trình bày theo Flow sau:
-- [ ] **Data Check:** Chỉ ra file `.csv` gốc của mô hình ML sinh ra, và file `.geojson` đã được pipeline xử lý.
-- [ ] **Interactive Check:** Kéo thả 4 thanh trượt (Slider) để giám khảo thấy vùng nguy cơ trên bản đồ thay đổi ngay lập tức dựa trên thông số sinh học/địa lý. (Minh chứng dữ liệu hiển thị là dữ liệu thật từ mô hình chứ không phải ảnh tĩnh).
-- [ ] **Live Action:** Trực tiếp click vào một khu rừng, upload một bức ảnh và viết ghi chú. Sau đó tải lại trang để thấy hệ thống CSDL không gian hoạt động ổn định và ảnh được trả về.
+## 3. Flow 2 in Detail: Crowdsourced Data
+
+To show real-world use, users (rangers, residents) can file a report when they see forest being cleared.
+
+### Step 3.1. Submitting a report
+1. The user clicks the map where they suspect clearing.
+2. A form asks for a comment and an on-site photo (image).
+3. The frontend packs the data and coordinates with `FormData()` and sends them by HTTP `POST /api/reports` to the backend (FastAPI).
+
+### Step 3.2. Backend processing
+1. **Image handling:** FastAPI receives the image, checks the format (only `png/jpg`) and saves it as a static file in the server's `uploads/` folder.
+2. **Security & anonymity:** the sender's IP address is one-way hashed with a secret `SALT` to protect the reporter's privacy.
+3. **Spatial storage:** the longitude and latitude are wrapped in a `WKTElement` and stored in PostgreSQL (with the PostGIS extension).
+
+### Step 3.3. Showing it on the map
+1. As soon as the report is saved, the frontend requests fresh data (`GET /api/reports`).
+2. The backend queries `PostGIS` for all reports, converts each `Geometry` back to longitude/latitude and returns the array.
+3. The frontend receives the data and pins green warning markers on the map.
+4. When the judges or a user click a marker, a popup shows the time, the photo and the comment of that report.
+
+---
+
+## 4. Verification Checklist (for the competition)
+For a convincing presentation, the team should check and present in this order:
+- [ ] **Data check:** show the original `.csv` produced by the ML model and the `.geojson` file produced by the pipeline.
+- [ ] **Interactive check:** move the four sliders so the judges see the risk areas on the map change instantly with the biophysical/geographic parameters (proof that the map shows real model data, not a static image).
+- [ ] **Live action:** click on a forest area, upload a photo and write a note. Then reload the page to show that the spatial database works and the photo comes back.
