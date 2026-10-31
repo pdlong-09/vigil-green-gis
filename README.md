@@ -61,8 +61,9 @@ Tàn phá rừng là một trong những thách thức môi trường cấp thi�
 - **Trực quan hóa Marker:** Báo cáo sau khi duyệt được lưu vào **PostGIS** và hiển thị tức thì dưới dạng Marker tương tác có Popup thông tin.
 
 ### 🧠 4. Tích Hợp Mô Hình AI / Machine Learning
-- Thuật toán **Random Forest Classifier** đạt chỉ số phân biệt **AUC = 0.89**.
-- **Area Transfer Validation:** Mô hình được huấn luyện 100% tại Huyện K'Bang và kiểm thử "dự đoán mù" tại Huyện Mang Yang, chứng minh tính tổng quát hóa cao và khả năng mở rộng (Scale-out) ra toàn quốc.
+- So sánh điểm tham chiếu (z-score) với **Hồi quy Logistic** và **Random Forest** trên lưới 1 km. Trên tập chia sẵn (1.212 ô kiểm tra), Random Forest đạt **AUC = 0.861**, Hồi quy Logistic đạt **AUC = 0.817** (whitepaper, Bảng II(A)).
+- **Area Transfer Validation:** Mô hình được huấn luyện 100% tại Huyện K'Bang và kiểm thử "dự đoán mù" tại Huyện Mang Yang. AUC giảm còn **0.589** (Logistic) và **0.535** (Random Forest) do khác biệt địa lý (Bảng II(B)); mô hình đơn giản chuyển vùng tốt hơn. Mở rộng ra tỉnh khác cần kiểm chứng lại bằng dữ liệu địa phương.
+- Bản đồ trên web dùng mô hình huấn luyện lại trên toàn bộ 6.000 ô, nên là lớp **xếp hạng ưu tiên**, không phải thước đo độ chính xác.
 
 ---
 
@@ -316,7 +317,7 @@ Hệ thống đi kèm bộ tài liệu kỹ thuật đầy đủ được lưu g
 - 🏛️ **[TRD_Architecture.md](docs/TRD_Architecture.md):** Tổng quan kiến trúc hệ thống Client-Server, kiến trúc CSDL không gian và giải pháp cô lập mã nguồn.
 - 📋 **[Technical_Requirements_Document.md](docs/Technical_Requirements_Document.md):** Chi tiết yêu cầu chức năng (FR), yêu cầu phi chức năng (NFR), cấu trúc bảng PostgreSQL và chuẩn bảo mật.
 - 🔄 **[Data_Flow.md](docs/Data_Flow.md):** Chi tiết luồng dữ liệu tĩnh (AI GeoJSON) & động (Báo cáo thực địa), cơ chế lọc động 60 FPS.
-- 🧠 **[ML_Evaluation_Methodology.md](docs/ML_Evaluation_Methodology.md):** Phương pháp luận huấn luyện AI, kịch bản Area Transfer Validation và chỉ số AUC 0.89.
+- 🧠 **[ML_Evaluation_Methodology.md](docs/ML_Evaluation_Methodology.md):** Phương pháp luận huấn luyện AI, kịch bản Area Transfer Validation và các chỉ số đánh giá (AUC, Cap@5%/10%).
 - 📖 **[Runbook.md](docs/Runbook.md):** Cẩm nang hướng dẫn cài đặt, vận hành, bảo trì và xử lý sự cố trong môi trường thực tế.
 
 ---
