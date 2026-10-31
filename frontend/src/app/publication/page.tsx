@@ -43,12 +43,12 @@ export default function PublicationPage() {
 
   // ── i18n helpers ──────────────────────────────────────────────────────────
   const tx = {
-    heroLabel:    isVi ? 'Nghiên cứu & Xuất bản' : 'Publications & Research',
+    heroLabel:    isVi ? 'Nghiên cứu · IDSOL 2026' : 'Research · IDSOL 2026',
     heroTitle:    isVi ? <>Khoa học là nền tảng<br /><span style={{ color: YELLOW }}>của bảo tồn</span></> : <>Science at the<br /><span style={{ color: YELLOW }}>core of conservation</span></>,
-    heroSub:      isVi ? 'VIGIL tiếp cận công tác bảo vệ rừng thông qua nghiên cứu mở, có thể kiểm chứng độc lập và triển khai vào thực tế.' : 'VIGIL approaches forest protection through open, reproducible research — publishing findings that can be independently verified and operationally deployed.',
-    statPub:      isVi ? 'Đã xuất bản' : 'Published',
-    statRank:     isVi ? 'Hạng tạp chí' : 'Journal rank',
-    statPipeline: isVi ? 'Đang nghiên cứu' : 'In pipeline',
+    heroSub:      isVi ? 'VIGIL là giải pháp nhóm gửi dự thi IDSOL 2026 — Emerging Technologies Olympiads (ETO): dự báo nơi có nguy cơ mất rừng cao nhất từ dữ liệu vệ tinh công khai, để kiểm lâm ưu tiên tuần tra trước.' : 'VIGIL is our solution submitted to IDSOL 2026 — Emerging Technologies Olympiads (ETO): predicting where forest loss is most likely from public satellite data, so rangers can patrol the riskiest places first.',
+    statPaper:    'Whitepaper',
+    statContest:  'IDSOL · ETO',
+    statGrid:     isVi ? 'Lưới dự báo' : 'Risk grid',
     sectionPub:   'Whitepaper',
     submitted:    isVi ? '✓ Đã nộp ETO' : '✓ Submitted to ETO',
     inProgress:   isVi ? '⏳ Đang thực hiện' : '⏳ In Progress',
@@ -202,9 +202,9 @@ export default function PublicationPage() {
               backdropFilter: 'blur(8px)'
             }}>
             {[
-              { val: '1', label: tx.statPub },
-              { val: 'Q1', label: tx.statRank },
-              { val: '2+', label: tx.statPipeline },
+              { val: '1', label: tx.statPaper },
+              { val: '2026', label: tx.statContest },
+              { val: '1 km', label: tx.statGrid },
             ].map((s, i) => (
               <div key={i} className="flex-1 p-4 text-center" style={i < 2 ? { borderRight: '1px solid rgba(255,255,255,0.2)' } : {}}>
                 <div className="text-2xl md:text-3xl font-extrabold leading-none mb-1" style={{ color: YELLOW }}>{s.val}</div>
