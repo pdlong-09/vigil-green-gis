@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import AdminDashboard from '@/components/AdminDashboard';
-import { Shield, Lock, User as UserIcon, LogOut, ArrowRight, Sparkles, AlertCircle } from 'lucide-react';
+import { Shield, Lock, User as UserIcon, LogOut, ArrowRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminPage() {
@@ -45,11 +45,6 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickFill = () => {
-    setUsername('admin');
-    setPassword('Admin@123');
   };
 
   // Logged in as Admin
@@ -179,17 +174,6 @@ export default function AdminPage() {
             <ArrowRight size={18} />
           </button>
         </form>
-
-        {/* Quick Fill Preset Hint */}
-        <div className="mt-8 pt-6 border-t border-slate-800/80 text-center">
-          <button
-            onClick={handleQuickFill}
-            className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-bold bg-amber-950/40 px-3 py-1.5 rounded-lg border border-amber-800/40 transition-colors"
-          >
-            <Sparkles size={14} />
-            <span>{language === 'vi' ? 'Điền nhanh tài khoản Admin mẫu' : 'Auto-fill default Admin account'}</span>
-          </button>
-        </div>
 
       </div>
     </div>
