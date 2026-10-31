@@ -77,28 +77,6 @@
     "trip_3_title": "Field Survey in Gia Lai",
     "trip_3_desc": "After completing the deforestation risk map, the VIGIL team conducted a three-day field expedition in Gia Lai Province to validate the model's predictions against on-the-ground conditions. Working closely with local forest rangers and authorities, the team surveyed high-risk areas, collected field data to improve the AI model, and participated in forest restoration activities. Through direct engagement with local communities, VIGIL gained a deeper understanding that effective forest conservation depends not only on technology, but also on sustainable livelihoods and nature-based tourism."
   },
-  "publication": {
-    "hero_title": "Scientific Research",
-    "hero_subtitle": "VIGIL approaches forest protection through open, reproducible research — publishing findings that can be independently verified and operationally deployed.",
-    "authors": "Pham Duy Long · Nguyen Vu Huy · Nguyen Duc Anh · Do Nhat Quang · Dam Anh Thu · Tran Dang An",
-    "paper_title": "An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution",
-    "btn_mdpi": "Read on MDPI ↗",
-    "btn_download": "Download Paper",
-    "btn_cite": "BibTeX Citation",
-    "abstract_title": "Abstract",
-    "abstract_p1": "Deforestation monitoring requires reliable historical mapping and actionable risk signals that can be translated into operational priorities. This study presents a reproducible, grid-based machine-learning pipeline for deforestation-risk prediction and warning-zone generation in Gia Lai Province, Vietnam.",
-    "abstract_p2": "The workflow is developed in K'Bang District and evaluated for geographic transferability in Mang Yang District. Public datasets are harmonized at a 1 km × 1 km grid-cell resolution, including Hansen Global Forest Change forest-cover and loss layers, SRTM elevation and slope, CHIRPS rainfall, and Sentinel-2 optical bands and vegetation/disturbance indices for the 2023 reporting year.",
-    "abstract_p3": "On the provided train-test split, logistic regression achieved AUC = 0.931, AP = 0.926, F1 = 0.881, and Capture@10% = 0.190; random forest achieved AUC = 0.942, AP = 0.914, F1 = 0.878, and Capture@10% = 0.184.",
-    "abstract_p4": "For cross-district transfer from K'Bang to Mang Yang, logistic regression and random forest achieved AUC values of 0.743 and 0.767 and Capture@10% values of 0.170 and 0.145, respectively. This research has been accepted for publication in MDPI Remote Sensing (Q1, Scopus-indexed), with publication in 2026.",
-    "methodology_title": "Methodology",
-    "methodology_p1": "The study area is partitioned into 1 km × 1 km grid cells. Outcome labels are extracted from Hansen lossyear, harmonizing SRTM elevation, CHIRPS rainfall, and Sentinel-2 vegetation indices.",
-    "datasets_title": "Datasets",
-    "datasets_p1": "Public satellite datasets from Google Earth Engine including Hansen GFC v1.12, SRTM Digital Elevation Model, CHIRPS Climate Data, and Sentinel-2 imagery.",
-    "results_title": "Results",
-    "results_p1": "Random Forest achieved an AUC of 0.942 on the internal split and 0.767 on the cross-district transfer test from K'Bang to Mang Yang.",
-    "future_title": "Future Roadmap",
-    "future_p1": "Scaling deforestation risk prediction to full national coverage across Vietnam in 2026."
-  },
   "contact": {
     "hero_title": "Contact VIGIL",
     "hero_subtitle": "We always welcome your feedback and suggestions to improve our project.",

@@ -77,28 +77,6 @@
     "trip_3_title": "Khảo sát thực địa tại Gia Lai",
     "trip_3_desc": "Sau khi hoàn thiện bản đồ dự báo nguy cơ mất rừng, đội ngũ VIGIL thực hiện chuyến khảo sát thực địa tại Gia Lai nhằm đối chiếu kết quả mô hình với hiện trạng rừng. Phối hợp cùng lực lượng kiểm lâm và chính quyền địa phương, đội ngũ khảo sát các khu vực có nguy cơ cao, thu thập dữ liệu thực địa và tham gia các hoạt động phục hồi rừng. Đồng thời, những cuộc trao đổi với cộng đồng địa phương giúp VIGIL nhận ra rằng bảo tồn rừng chỉ có thể bền vững khi gắn với sinh kế của người dân và phát triển du lịch xanh."
   },
-  "publication": {
-    "hero_title": "Nghiên cứu Khoa học",
-    "hero_subtitle": "VIGIL tiếp cận công tác bảo vệ rừng thông qua nghiên cứu mở, có thể kiểm chứng độc lập và triển khai vào thực tế.",
-    "authors": "Phạm Duy Long · Nguyễn Vũ Huy · Nguyễn Đức Anh · Đỗ Nhật Quang · Đàm Anh Thư · Trần Đăng An",
-    "paper_title": "An Interpretable Machine Learning Pipeline for Deforestation Risk Prediction in Vietnam at 1 km Resolution",
-    "btn_mdpi": "Đọc trên MDPI ↗",
-    "btn_download": "Tải bài nghiên cứu",
-    "btn_cite": "Trích dẫn BibTeX",
-    "abstract_title": "Tóm tắt",
-    "abstract_p1": "Giám sát phá rừng đòi hỏi cả bản đồ lịch sử đáng tin cậy lẫn tín hiệu nguy cơ có thể chuyển hóa thành ưu tiên vận hành. Nghiên cứu này trình bày một pipeline học máy dạng lưới, có khả năng tái tạo, nhằm dự đoán nguy cơ phá rừng và tạo vùng cảnh báo cho tỉnh Gia Lai, Việt Nam.",
-    "abstract_p2": "Quy trình được phát triển tại huyện K'Bang và đánh giá khả năng chuyển vùng tại huyện Mang Yang. Các tập dữ liệu công khai được tích hợp ở độ phân giải ô lưới 1 km × 1 km, bao gồm Hansen Global Forest Change, SRTM, CHIRPS và các chỉ số quang học Sentinel-2 năm 2023.",
-    "abstract_p3": "Trên tập phân chia huấn luyện-kiểm tra, hồi quy logistic đạt AUC = 0,931, F1 = 0,881 và Capture@10% = 0,190; rừng ngẫu nhiên đạt AUC = 0,942, F1 = 0,878 và Capture@10% = 0,184.",
-    "abstract_p4": "Trong bài kiểm tra chuyển vùng K'Bang → Mang Yang, hồi quy logistic và rừng ngẫu nhiên đạt AUC lần lượt là 0,743 và 0,767 và Capture@10% là 0,170 và 0,145. Nghiên cứu này đã được chấp nhận đăng trên tạp chí MDPI Remote Sensing (Q1, chỉ mục Scopus), dự kiến xuất bản năm 2026.",
-    "methodology_title": "Phương pháp luận",
-    "methodology_p1": "Quy trình xây dựng mạng ô lưới 1 km², trích xuất nhãn phá rừng từ Hansen lossyear, đồng bộ dữ liệu địa hình SRTM, lượng mưa CHIRPS và chỉ số thực vật Sentinel-2.",
-    "datasets_title": "Tập dữ liệu",
-    "datasets_p1": "Dữ liệu vệ tinh công khai từ Google Earth Engine bao gồm Hansen GFC v1.12, SRTM Digital Elevation Model, CHIRPS Climate Data và ảnh Sentinel-2.",
-    "results_title": "Kết quả",
-    "results_p1": "Mô hình Rừng ngẫu nhiên đạt AUC 0.942 trên tập kiểm tra nội bộ và AUC 0.767 trong bài kiểm tra chuyển vùng từ K'Bang sang Mang Yang.",
-    "future_title": "Định hướng mở rộng",
-    "future_p1": "Mở rộng mô hình dự báo rủi ro mất rừng trên quy mô toàn quốc tại Việt Nam năm 2026."
-  },
   "contact": {
     "hero_title": "Liên hệ với VIGIL",
     "hero_subtitle": "Chúng tôi luôn lắng nghe ý kiến đóng góp từ bạn để cải thiện và phát triển dự án tốt hơn.",
