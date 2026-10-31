@@ -72,22 +72,32 @@ export default function PublicationPage() {
       ? <><strong className="text-slate-800">Nổi bật:</strong> Vì tập kiểm tra cân bằng 50/50, Cap@5% tối đa chỉ khoảng 0,098 (top 5% của 1.212 mẫu ≈ 61 mẫu, trên 620 mẫu mất rừng). Hồi quy Logistic đạt 0,089 — khoảng 90% mức trần — và khi chuyển sang huyện chưa từng thấy vẫn vượt Random Forest. Mô hình đơn giản, có thể giải thích lại chuyển vùng tốt hơn.</>
       : <><strong className="text-slate-800">Notable:</strong> Because the test set is balanced 50/50, the highest achievable Cap@5% is only about 0.098 (the top 5% of 1,212 samples ≈ 61 samples, out of 620 loss samples). Logistic Regression reaches 0.089 — about 90% of that ceiling — and still beats Random Forest on an unseen district. The simpler, interpretable model transfers better.</>,
     step01Title: isVi ? 'Xây dựng lưới ô vuông' : 'Grid Construction',
-    step01Desc:  isVi ? <>Vùng nghiên cứu được chia thành các ô lưới 1 km × 1 km, mỗi ô được gán mã định danh duy nhất <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">cell_id</code>. Nhãn và biến dự báo được tổng hợp theo đơn vị này để đảm bảo tính nhất quán không gian trên toàn bộ tập dữ liệu.</> : <>The study area is partitioned into 1 km × 1 km grid cells, each assigned a unique <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">cell_id</code>. Labels and predictors are aggregated to this footprint to ensure spatial consistency across all datasets.</>,
-    step02Title: isVi ? 'Định nghĩa nhãn kết quả' : 'Outcome Definition',
-    step02Desc:  isVi ? <>Nhãn nhị phân được trích xuất từ lớp <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">lossyear</code> của Hansen — ô lưới mang nhãn dương nếu có mất rừng trong giai đoạn 2001–2024. Ô lưới được lọc theo độ che phủ tán cây nền (<code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">treecover2000 ≥ 30%</code>) và cân bằng mẫu ~50/50.</> : <>A binary label is derived from the Hansen <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">lossyear</code> layer — a cell is positive if any forest loss occurred during 2001–2024. Cells are filtered using baseline canopy cover (<code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">treecover2000 ≥ 30%</code>) and samples are balanced ~50/50.</>,
+    step01Desc:  isVi ? <>Vùng nghiên cứu được chia thành các ô lưới 1 km × 1 km, mỗi ô được gán mã định danh duy nhất <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">cell_id</code>. Google Earth Engine truy xuất và tổng hợp dữ liệu theo đơn vị này; lưới có thể dựng cho bất kỳ tỉnh hay huyện nào.</> : <>The study area is partitioned into 1 km × 1 km grid cells, each assigned a unique <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">cell_id</code>. Google Earth Engine extracts and aggregates every dataset to this footprint; the grid can be drawn for any province or district.</>,
+    step02Title: isVi ? 'Bảng đặc trưng & nhãn' : 'Feature Table & Label',
+    step02Desc:  isVi ? <>Mỗi dòng của bảng đặc trưng tổng là một vị trí lấy mẫu: địa hình, lượng mưa và các kênh quang học (NDVI, NBR). Nhãn nhị phân lấy từ lớp <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">lossyear</code> của Hansen (có mất rừng bất kỳ giai đoạn 2001–2024), với các ô có <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">treecover2000 ≥ 30%</code>; mẫu được cân bằng 50/50. Vì vậy điểm số dùng để xếp hạng rủi ro và cần hiệu chỉnh xác suất trước khi vận hành thực tế.</> : <>Each row of the master feature table is one sample location: terrain, rainfall and optical bands (NDVI, NBR). The binary label comes from the Hansen <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">lossyear</code> layer (any loss 2001–2024) for cells with <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">treecover2000 ≥ 30%</code>; sampling is balanced 50/50. Scores therefore rank risk and need probability calibration before operational use.</>,
     step03Title: isVi ? 'Các mô hình so sánh' : 'Models Compared',
     baselineLabel: isVi ? 'THAM CHIẾU' : 'BASELINE',
-    baselineDesc:  isVi ? 'Điểm chuẩn tối giản — tham chiếu minh bạch' : 'Standardized benchmark — minimal reference',
-    interpLabel:   isVi ? 'CÓ THỂ GIẢI THÍCH' : 'INTERPRETABLE',
-    interpDesc:    isVi ? 'Hệ số cho thấy hướng tác động của các yếu tố rủi ro' : 'Coefficients show direction of risk drivers',
-    bestLabel:     isVi ? 'AUC TỐT NHẤT' : 'BEST AUC',
+    baselineDesc:  isVi ? 'Điểm z-score minh bạch, không học từ dữ liệu' : 'Transparent z-score, no learning from data',
+    interpLabel:   isVi ? 'CHUYỂN VÙNG TỐT NHẤT' : 'BEST TRANSFER',
+    interpDesc:    isVi ? 'Hệ số: mưa ↑, độ cao/độ dốc ↓ → rủi ro ↑' : 'Coefficients: ↑ rainfall, ↓ elevation/slope → higher risk',
+    bestLabel:     isVi ? 'AUC CAO NHẤT (CÙNG VÙNG)' : 'BEST SAME-AREA AUC',
     bestDesc:      isVi ? 'Nắm bắt mối quan hệ phi tuyến' : 'Captures non-linear relationships',
     step04Title:   isVi ? 'Thiết kế kiểm định' : 'Validation Design',
-    splitTitle:    isVi ? 'Phân chia nội bộ' : 'Provided Split',
-    splitDesc:     isVi ? '80/20 hold-out trong mẫu kết hợp · N = 1.212 ô kiểm tra' : '80/20 hold-out within combined sample · N = 1,212 test cells',
-    transferTitle: isVi ? 'Kiểm tra chuyển vùng' : 'District Transfer Test',
-    transferDesc:  isVi ? 'Train K\'Bang → test Mang Yang (chưa thấy) · N = 2.000 ô kiểm tra' : "Train K'Bang → test Mang Yang (unseen) · N = 2,000 test cells",
-    metricsLabel:  isVi ? 'Chỉ số: AUC · AP · Độ chính xác · Recall · F1 · Capture@5% · Capture@10%' : 'Metrics: AUC · AP · Precision · Recall · F1 · Capture@5% · Capture@10%',
+    splitTitle:    isVi ? 'Chia cùng vùng' : 'Same-Area Split',
+    splitDesc:     isVi ? '6.000 mẫu gộp → 4.788 huấn luyện / 1.212 kiểm tra' : '6,000 pooled samples → 4,788 train / 1,212 test',
+    transferTitle: isVi ? 'Kiểm tra chuyển vùng' : 'Area Transfer Test',
+    transferDesc:  isVi ? 'Train K\'Bang (4.000) → test Mang Yang (2.000, chưa từng thấy)' : "Train K'Bang (4,000) → test Mang Yang (2,000, unseen)",
+    metricsLabel:  isVi ? 'Chỉ số: AUC · AP · Precision · Recall · F1 · Cap@5% · Cap@10%' : 'Metrics: AUC · AP · Precision · Recall · F1 · Cap@5% · Cap@10%',
+    explainLabel:  isVi ? 'Giải thích: đường ROC · mức quan trọng đặc trưng (RF) · hệ số LogReg · kiểm tra độ nhạy với định nghĩa nhãn mất rừng thay thế cho kết luận nhất quán. Các đầu ra giải thích không hàm ý quan hệ nhân quả.' : 'Explainability: ROC curves · RF feature importance · LogReg coefficients · a sensitivity check with an alternative Hansen-loss label definition yielded consistent conclusions. Neither explainability output implies causality.',
+    step05Title:   isVi ? 'Khung 3 trụ cột dữ liệu' : 'Three Data Pillars',
+    pillarReady:   isVi ? 'ĐANG DÙNG' : 'IN USE',
+    pillarAwait:   isVi ? 'CHỜ DỮ LIỆU QUỐC GIA' : 'AWAITING NATIONAL DATA',
+    pillar1Title:  isVi ? 'Địa lý' : 'Geographic',
+    pillar1Desc:   isVi ? 'Địa hình và độ che phủ rừng nền — SRTM, Hansen GFC' : 'Terrain and baseline forest cover — SRTM, Hansen GFC',
+    pillar2Title:  isVi ? 'Khí hậu' : 'Climatic',
+    pillar2Desc:   isVi ? 'Lượng mưa và tín hiệu thực vật/nhiễu loạn — CHIRPS, Sentinel-2' : 'Rainfall and vegetation/disturbance signals — CHIRPS, Sentinel-2',
+    pillar3Title:  isVi ? 'Bối cảnh con người/sản xuất' : 'Human/Production Context',
+    pillar3Desc:   isVi ? 'Hồ sơ khai thác, quản lý rừng địa phương — tách khai thác hợp pháp khỏi phá rừng trái phép; Bộ NN&MT đang tổng hợp vào FRMS' : 'Local logging and forest-management records — separates licensed harvest from illegal clearing; being compiled by MAE into the national FRMS',
     varLabel:      isVi ? 'Biến số' : 'Variables',
     roleLabel:     isVi ? 'Vai trò' : 'Role',
     datasetsNote:  isVi ? 'Toàn bộ tập dữ liệu đều công khai. Xử lý qua Google Earth Engine (GEE) + Python.' : 'All datasets are publicly available. Processed via Google Earth Engine (GEE) + Python.',
@@ -457,10 +467,10 @@ export default function PublicationPage() {
                           <div className="text-xs font-medium text-slate-800 mb-1">{isVi ? 'Điểm rủi ro' : 'Risk Score'}</div>
                           <div className="text-[11px] text-slate-500">{tx.baselineDesc}</div>
                         </div>
-                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
-                          <div className="font-mono text-[10px] text-slate-400 mb-1">{tx.interpLabel}</div>
+                        <div className="rounded-lg p-3 border-2" style={{ backgroundColor: `${GREEN}08`, borderColor: `${GREEN}50` }}>
+                          <div className="font-mono text-[10px] font-bold mb-1" style={{ color: GREEN }}>{tx.interpLabel}</div>
                           <div className="text-xs font-medium text-slate-800 mb-1">{isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}</div>
-                          <div className="text-[11px] text-slate-500">{tx.interpDesc}</div>
+                          <div className="text-[11px] text-slate-600">{tx.interpDesc}</div>
                         </div>
                         <div className="rounded-lg p-3 border-2" style={{ backgroundColor: `${GREEN}08`, borderColor: `${GREEN}50` }}>
                           <div className="font-mono text-[10px] font-bold mb-1" style={{ color: GREEN }}>{tx.bestLabel}</div>
@@ -486,7 +496,31 @@ export default function PublicationPage() {
                           <div className="text-[11px] text-slate-500">{tx.transferDesc}</div>
                         </div>
                       </div>
-                      <div className="font-mono text-[11px] text-slate-500">{tx.metricsLabel}</div>
+                      <div className="font-mono text-[11px] text-slate-500 mb-1">{tx.metricsLabel}</div>
+                      <div className="font-mono text-[11px] text-slate-500">{tx.explainLabel}</div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <span className="font-mono text-[10px] border px-2.5 py-0.5 rounded-full font-bold"
+                          style={{ color: YELLOW, backgroundColor: `${GREEN}20`, borderColor: `${GREEN}40` }}>05</span>
+                        <span className="text-sm font-semibold text-slate-800">{tx.step05Title}</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {[
+                          { title: tx.pillar1Title, desc: tx.pillar1Desc, ready: true },
+                          { title: tx.pillar2Title, desc: tx.pillar2Desc, ready: true },
+                          { title: tx.pillar3Title, desc: tx.pillar3Desc, ready: false },
+                        ].map((p) => (
+                          <div key={p.title} className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <div className="font-mono text-[10px] font-bold mb-1" style={{ color: p.ready ? GREEN : AMBER }}>
+                              {p.ready ? tx.pillarReady : tx.pillarAwait}
+                            </div>
+                            <div className="text-xs font-medium text-slate-800 mb-1">{p.title}</div>
+                            <div className="text-[11px] text-slate-500">{p.desc}</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
