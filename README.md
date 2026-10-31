@@ -285,7 +285,12 @@ pm2 startup
 DATABASE_URL=postgresql://<user>:<password>@<host>:5432/gialai_forest
 SALT_SECRET=your_super_secret_salt_string_2026
 SECRET_KEY=your_jwt_secret_key
+ADMIN_PASSWORD=your_first_admin_password
 ```
+
+- `SECRET_KEY` ký JWT, `SALT_SECRET` là muối băm IP người báo cáo. Nếu bỏ trống, backend tự tạo giá trị ngẫu nhiên mỗi lần khởi động (phiên đăng nhập sẽ hết khi khởi động lại).
+- `ADMIN_PASSWORD` chỉ dùng khi tạo tài khoản `admin` lần đầu. Nếu bỏ trống, backend tạo mật khẩu ngẫu nhiên và in một lần vào log.
+- Tạo giá trị ngẫu nhiên: `python -c "import secrets; print(secrets.token_urlsafe(48))"`. Không commit các giá trị này.
 
 ### Frontend (`frontend/.env.local` hoặc Docker `--build-arg`)
 ```env
