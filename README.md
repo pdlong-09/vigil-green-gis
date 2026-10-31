@@ -192,7 +192,7 @@ Phương pháp này giúp tự động cài đặt cả Database PostgreSQL (Pos
 3. **Truy cập ứng dụng:**
    - 🌐 **Website Frontend:** `http://localhost:3000`
    - 📑 **API Documentation (Swagger UI):** `http://localhost:8000/docs`
-   - 🗄️ **Database PostGIS:** Port `5432` (`gialai_forest`)
+   - 🗄️ **Database PostGIS:** `localhost:5433` từ máy host, `db:5432` bên trong mạng Docker (`gialai_forest`)
 
 4. **Dừng hệ thống:**
    ```bash
