@@ -1,160 +1,160 @@
-# Hướng Dẫn Cài Đặt & Vận Hành Hệ Thống (Runbook)
+# Installation & Operations Guide (Runbook)
 
-**Dự án:** Gia Lai Deforestation Risk Map (Web GIS)
+**Project:** Gia Lai Deforestation Risk Map (Web GIS)
 
-Tài liệu này hướng dẫn chi tiết từng bước để khởi chạy toàn bộ hệ thống (Frontend + Backend) trên máy tính local (môi trường phát triển) và cách triển khai trên Server thật (Production).
-
----
-
-## 1. Yêu cầu Hệ thống (Prerequisites)
-Trước khi bắt đầu, máy tính/server của bạn cần cài đặt sẵn:
-1. **Node.js** (Phiên bản >= 20.9.0) - *Dùng để chạy Frontend Next.js.*
-2. **Python** (Phiên bản >= 3.9) - *Dùng để chạy Backend FastAPI và Data Pipeline.*
-3. **PostgreSQL** (Kèm extension **PostGIS**) - *Cơ sở dữ liệu lưu trữ không gian.*
+This document walks through starting the whole system (frontend + backend) on a local machine (development) and deploying it on a real server (production). Paths are relative to the repository root.
 
 ---
 
-## 2. Thiết lập Cơ Sở Dữ Liệu (PostgreSQL)
-1. Mở công cụ quản lý DB (như pgAdmin hoặc DBeaver).
-2. Tạo một Database mới, đặt tên ví dụ là: `gialai_forest`.
-3. Chạy lệnh SQL sau để kích hoạt PostGIS (Bắt buộc để lưu tọa độ bản đồ):
+## 1. Prerequisites
+Before you start, the machine/server needs:
+1. **Node.js** (version >= 20.9.0) — *runs the Next.js frontend.*
+2. **Python** (version >= 3.9) — *runs the FastAPI backend and the data pipeline.*
+3. **PostgreSQL** (with the **PostGIS** extension) — *the spatial database.*
+
+---
+
+## 2. Database Setup (PostgreSQL)
+1. Open a database tool (such as pgAdmin or DBeaver).
+2. Create a new database, for example `gialai_forest`.
+3. Run this SQL to enable PostGIS (required to store map coordinates):
    ```sql
    CREATE EXTENSION IF NOT EXISTS postgis;
    ```
 
 ---
 
-## 3. Khởi chạy Backend (FastAPI)
+## 3. Starting the Backend (FastAPI)
 
-Mở Terminal / Command Prompt và thực hiện:
+Open a terminal and run:
 
-### Bước 3.1. Cài đặt thư viện
+### Step 3.1. Install the dependencies
 ```bash
-cd web-gis/backend
+cd backend
 
-# (Tùy chọn) Tạo môi trường ảo (Virtual Environment)
+# (Optional) create a virtual environment
 python -m venv venv
-# Active venv (Windows): venv\Scripts\activate
-# Active venv (Mac/Linux): source venv/bin/activate
+# Activate (Windows): venv\Scripts\activate
+# Activate (Mac/Linux): source venv/bin/activate
 
-# Cài đặt thư viện
+# Install the dependencies
 pip install -r requirements.txt
 ```
 
-### Bước 3.2. Cấu hình biến môi trường
-Tạo một file có tên `.env` trong thư mục `web-gis/backend` với nội dung sau (Thay đổi thông tin user/password cho khớp với DB của bạn):
+### Step 3.2. Configure the environment variables
+Create a file named `.env` in `backend/` with the following content (change the user/password to match your database):
 ```env
 DATABASE_URL=postgresql://postgres:123456@localhost:5432/gialai_forest
 SALT_SECRET=my_super_secret_salt_2026
+SECRET_KEY=change_me_to_a_random_value
+ADMIN_PASSWORD=change_me_too
 ```
 
-### Bước 3.3. Chạy Server
+### Step 3.3. Run the server
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
-👉 Khi chạy thành công, API sẽ hoạt động tại: `http://localhost:8000`.
-Bạn có thể xem tài liệu API (Swagger UI) tại: `http://localhost:8000/docs`.
+👉 Once running, the API is available at `http://localhost:8000`.
+The API documentation (Swagger UI) is at `http://localhost:8000/docs`.
 
 ---
 
-## 4. Khởi chạy Frontend (Next.js)
+## 4. Starting the Frontend (Next.js)
 
-Mở một Terminal **mới** (Giữ terminal Backend tiếp tục chạy):
+Open a **new** terminal (keep the backend running):
 
-### Bước 4.1. Cài đặt thư viện
+### Step 4.1. Install the dependencies
 ```bash
-cd web-gis/frontend
+cd frontend
 npm install
 ```
 
-### Bước 4.2. Cấu hình biến môi trường (Tùy chọn)
-Tạo file `.env.local` trong thư mục `frontend/` (nếu Backend không chạy ở cổng 8000 mặc định):
+### Step 4.2. Configure the environment variables (optional)
+Create `.env.local` in `frontend/` (only if the backend does not run on the default port 8000):
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000/api
 ```
 
-### Bước 4.3. Chạy Server
+### Step 4.3. Run the server
 ```bash
 npm run dev
 ```
-👉 Giao diện Website sẽ hiển thị tại: `http://localhost:3000`.
+👉 The website is available at `http://localhost:3000`.
 
 ---
 
-## 5. Cập nhật Dữ Liệu Bản Đồ (Data Pipeline)
-Hệ thống lấy dữ liệu trực quan hiển thị trên bản đồ từ file tĩnh `.geojson`. Mỗi khi có file `CSV` mới (ví dụ khi Team Data chạy xong mô hình ML hoặc bổ sung các cột như NDVI, NBR), bạn làm theo các bước sau để cập nhật bản đồ:
+## 5. Updating the Map Data (Data Pipeline)
+The map reads its data from a static `.geojson` file. Whenever there is a new `CSV` (for example after the data team re-runs the ML model or adds columns such as NDVI or NBR), update the map as follows:
 
-1. Đặt file CSV mới vào thư mục `data/` ở thư mục gốc của project.
-2. Sửa lại đường dẫn file trong `web-gis/data-pipeline/csv_to_geojson.py` (nếu tên file thay đổi).
-3. Chạy lệnh:
+1. Put the new CSV in the `data/` folder.
+2. Update the file path in `data-pipeline/csv_to_geojson.py` (if the file name changed).
+3. Run:
    ```bash
-   cd web-gis
    python data-pipeline/csv_to_geojson.py
    ```
-4. Script sẽ tự động tạo file `grid_data.geojson` và chép đè vào thư mục `frontend/public/data/`.
-5. F5 (Tải lại) trang web, bản đồ sẽ ngay lập tức được cập nhật dữ liệu mới.
+4. The script writes `grid_data.geojson` and overwrites it in `frontend/public/data/`.
+5. Reload the website (F5) and the map shows the new data immediately.
 
 ---
 
-## 6. Hướng dẫn Triển khai Production (Server thực tế)
+## 6. Production Deployment (real server)
 
-Trên Server thực, bạn không nên dùng `npm run dev` hay `uvicorn --reload` vì nó không ổn định khi chịu tải. Hãy dùng **PM2** (Process Manager).
+On a real server, do not use `npm run dev` or `uvicorn --reload`; they are not stable under load. Use **PM2** (process manager).
 
-**1. Build Frontend:**
+**1. Build the frontend:**
 ```bash
-cd web-gis/frontend
+cd frontend
 npm run build
 ```
 
-**2. Cài đặt PM2 và Chạy ngầm:**
+**2. Install PM2 and run in the background:**
 ```bash
 npm install -g pm2
 
-# Khởi chạy Backend
-cd web-gis/backend
+# Start the backend
+cd ../backend
 pm2 start "uvicorn main:app --host 127.0.0.1 --port 8000" --name "gialai-backend"
 
-# Khởi chạy Frontend
+# Start the frontend
 cd ../frontend
 pm2 start npm --name "gialai-frontend" -- start
 
-# Lưu trạng thái để tự động bật lại khi Server bị khởi động lại
+# Save the state so everything restarts when the server reboots
 pm2 save
 pm2 startup
 ```
 
-Lúc này, hệ thống của bạn đã sẵn sàng chạy ngầm ổn định 24/7. Bạn có thể cài đặt thêm Nginx làm Reverse Proxy để gắn Domain (VD: `gialai-forest.com`) thay vì dùng port 3000.
+The system now runs reliably in the background 24/7. You can add Nginx as a reverse proxy to attach a domain (e.g. `gialai-forest.com`) instead of using port 3000.
 
 ---
 
-## 7. Triển khai bằng Docker Compose (Khuyến nghị cho Server/Production)
+## 7. Deployment with Docker Compose (recommended for servers/production)
 
-Phương pháp này giúp tự động cài đặt cả Database PostgreSQL (kèm PostGIS), Backend và Frontend chỉ với một dòng lệnh, giải quyết hoàn toàn vấn đề xung đột môi trường.
+This installs the PostgreSQL database (with PostGIS), the backend and the frontend with a single command and avoids environment conflicts entirely.
 
-**Yêu cầu:** Máy tính/Server đã cài đặt sẵn [Docker](https://docs.docker.com/get-docker/) và [Docker Compose](https://docs.docker.com/compose/install/).
+**Requirements:** the machine/server has [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
-**1. Di chuyển vào thư mục web-gis:**
+**1. Go to the repository root:**
 ```bash
-cd d:\Slide_THPT\NCKH_TA\deforestation-risk-ai\web-gis
+cd vigil-green-gis
 ```
-*(Trên Linux Server, cd vào thư mục web-gis tương ứng).*
 
-**2. Tùy chỉnh tham số (Nếu cần):**
-Mở tệp `docker-compose.yml`, ở phần service `frontend`, biến `NEXT_PUBLIC_API_URL` đang để mặc định là `http://localhost:8000`. Nếu triển khai lên VPS/Server có Domain hoặc Public IP, hãy đổi tham số này thành Domain/IP thực tế của bạn.
+**2. Adjust the parameters (if needed):**
+Open `docker-compose.yml`. In the `frontend` service, `NEXT_PUBLIC_API_URL` defaults to `http://localhost:8000`. When deploying to a VPS/server with a domain or public IP, change it to your real domain/IP.
 
-**3. Build và Chạy hệ thống:**
+**3. Build and start the system:**
 ```bash
 docker-compose up --build -d
 ```
-Quá trình này sẽ diễn ra tự động: tải Image PostGIS, build Image cho FastAPI (Backend) và build Image cho Next.js (Frontend). Lệnh `-d` giúp hệ thống chạy ngầm.
+This pulls the PostGIS image, builds the FastAPI (backend) image and builds the Next.js (frontend) image automatically. `-d` runs everything in the background.
 
-**4. Trạng thái:**
-- Frontend (Website): `http://localhost:3000`
-- Backend API Docs: `http://localhost:8000/docs`
-- Database: Chạy trên port `5432` nội bộ.
+**4. Status:**
+- Frontend (website): `http://localhost:3000`
+- Backend API docs: `http://localhost:8000/docs`
+- Database: port `5432` inside the Docker network, published on the host as `5433`.
 
-**5. Dừng hệ thống:**
+**5. Stop the system:**
 ```bash
 docker-compose down
 ```
-Lưu ý: Dữ liệu Database và Ảnh Upload được lưu trữ vĩnh viễn ở các Docker Volumes (`postgres_data` và `backend_uploads`), sẽ không bị mất khi chạy lệnh `down`.
+Note: database data and uploaded images persist in Docker volumes (`postgres_data` and `backend_uploads`) and are not lost when running `down`.
