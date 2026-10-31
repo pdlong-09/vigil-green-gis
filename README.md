@@ -11,6 +11,9 @@
 
 > 💡 **Sứ mệnh Dự án:** *VIGIL tích hợp dữ liệu ảnh vệ tinh, trí tuệ nhân tạo (AI) cùng khảo sát thực địa nhằm phát hiện sớm đồng thời trực quan hóa các nguy cơ mất rừng trên bản đồ, từ đó thúc đẩy hành động bảo tồn nhanh chóng, hiệu quả hơn tại Việt Nam và trên toàn cầu.*
 
+- 🌐 **Website:** [www.vigil.green](https://www.vigil.green/)
+- 📄 **Whitepaper (IDSOL 2026 — ETO):** [VIGIL_IDSOL2026_Whitepaper.pdf](frontend/public/papers/VIGIL_IDSOL2026_Whitepaper.pdf) · [Poster](frontend/public/papers/VIGIL_IDSOL2026_Poster.pdf) — Phạm Duy Long, Nguyễn Đức Anh, Đỗ Nhật Quang (2026)
+
 ---
 
 ## 📋 Mục Lục
@@ -180,7 +183,7 @@ Phương pháp này giúp tự động cài đặt cả Database PostgreSQL (Pos
 
 1. **Clone repository:**
    ```bash
-   git clone https://github.com/minhduc01168/vigil-green-gis.git
+   git clone https://github.com/pdlong-09/vigil-green-gis.git
    cd vigil-green-gis
    ```
 
