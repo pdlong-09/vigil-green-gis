@@ -1,15 +1,15 @@
-# Tài liệu Yêu cầu Kỹ thuật (TRD) & Kiến trúc Hệ thống
+# Technical Requirements (TRD) & System Architecture
 
-Mục tiêu của tài liệu này là xác định rõ kiến trúc hệ thống, các lựa chọn kỹ thuật chi tiết và cấu trúc thư mục để phát triển Nền tảng Bản đồ Cảnh báo Mất rừng Gia Lai. Nền tảng này sẽ được đặt trong một thư mục hoàn toàn độc lập với phần code Machine Learning hiện tại.
+This document sets out the system architecture, the detailed technical choices and the folder structure for building the Gia Lai Deforestation Warning Map platform. The platform lives in a folder that is completely separate from the existing machine-learning code.
 
-## 1. Kiến trúc Hệ thống (System Architecture)
+## 1. System Architecture
 
-Hệ thống được thiết kế theo kiến trúc **Client-Server** kết hợp với **Spatial Database**, đảm bảo khả năng xử lý bản đồ mượt mà và lưu trữ tọa độ check-in. Cả Frontend và Backend sẽ được deploy trên cùng 1 server.
+The system follows a **client–server** architecture with a **spatial database**, so the map stays smooth and check-in coordinates can be stored. The frontend and the backend are deployed on the same server.
 
 ```mermaid
 graph TD
     %% Client Tier
-    subgraph Frontend [Client / Trình duyệt]
+    subgraph Frontend [Client / Browser]
         UI[Next.js UI & TailwindCSS]
         Map[MapLibre GL JS]
         UI <--> Map
@@ -27,81 +27,81 @@ graph TD
     end
 
     %% Data Tier
-    subgraph Database [Cơ sở dữ liệu]
+    subgraph Database [Database]
         DB[(PostgreSQL + PostGIS)]
     end
     
-    subgraph DataPipeline ["Tiền xử lý Data (Chạy 1 lần)"]
+    subgraph DataPipeline ["Data pre-processing (run once)"]
         ETL[Geopandas / Python]
-        CSV[(File CSV Data)]
-        ETL -- Đọc --> CSV
-        ETL -- Sinh ra --> TileServer
+        CSV[(CSV data files)]
+        ETL -- Reads --> CSV
+        ETL -- Generates --> TileServer
     end
 
     ORM <--> DB
-    API -- Lưu trữ ảnh --> Storage[(Local Hard Drive)]
+    API -- Stores images --> Storage[(Local Hard Drive)]
 ```
 
-### Các thành phần chính:
-1. **Frontend (Next.js):** Quản lý giao diện, các tab, slider, và hiển thị bản đồ bằng MapLibre GL JS. Tương tác với người dùng.
-2. **Backend (Python - FastAPI):** Xử lý logic upload ảnh (lưu trực tiếp lên ổ cứng), nhận comment, hash IP để ẩn danh, và truy vấn các điểm check-in từ Database gửi lên Frontend. FastAPI được chọn vì hiệu năng cao, hỗ trợ Async và tài liệu API tự động (Swagger).
-3. **Database (PostgreSQL + PostGIS):** Cơ sở dữ liệu quan hệ mạnh mẽ, lưu trữ tọa độ check-in dưới dạng điểm không gian (Geometry Point).
-4. **Data Pipeline:** Script chạy độc lập (chạy 1 lần hoặc khi có data mới). Đọc các file `CSV` -> Sinh ra các file GeoJSON tĩnh -> Đưa vào thư mục tĩnh của Frontend để render bản đồ 1km.
+### Main components:
+1. **Frontend (Next.js):** manages the interface, tabs and sliders, renders the map with MapLibre GL JS and handles user interaction.
+2. **Backend (Python, FastAPI):** handles image uploads (saved directly to disk), receives comments, hashes IPs for anonymity and queries the check-in points from the database for the frontend. FastAPI was chosen for its performance, async support and automatic API documentation (Swagger).
+3. **Database (PostgreSQL + PostGIS):** a robust relational database that stores check-in coordinates as spatial points (Geometry Point).
+4. **Data pipeline:** a standalone script (run once, or whenever new data arrives). It reads the `CSV` files, generates static GeoJSON files and places them in the frontend's static folder to render the 1 km map.
 
 ---
 
-## 2. Yêu cầu Kỹ thuật (Technical Requirements)
+## 2. Technical Requirements
 
-### 2.1. Cấu trúc thư mục dự án
-Toàn bộ mã nguồn web được cô lập trong thư mục `web-gis/` nằm ở thư mục gốc của project hiện tại.
+### 2.1. Project folder structure
+The original layout kept all web code isolated in a `web-gis/` folder at the root of the ML project (this repository holds the contents of `web-gis/`):
 ```text
 deforestation-risk-ai/
-├── data/                  # Dữ liệu ML hiện tại
-├── docs/                  # Tài liệu ML hiện tại
-├── web-gis/               # THƯ MỤC DÀNH CHO WEBSITE
-│   ├── docs/              # Tài liệu của riêng website
-│   ├── frontend/          # Mã nguồn Next.js (React)
-│   ├── backend/           # Mã nguồn Python Backend (FastAPI)
-│   └── data-pipeline/     # Các script Python xử lý CSV -> Bản đồ
+├── data/                  # Existing ML data
+├── docs/                  # Existing ML documentation
+├── web-gis/               # WEBSITE FOLDER
+│   ├── docs/              # Website documentation
+│   ├── frontend/          # Next.js (React) source
+│   ├── backend/           # Python backend (FastAPI) source
+│   └── data-pipeline/     # Python scripts converting CSV -> map
 └── ...
 ```
 
-### 2.2. Frontend Specifications
+### 2.2. Frontend specifications
 *   **Framework:** Next.js (App Router).
-*   **Ngôn ngữ:** TypeScript để đảm bảo code an toàn.
-*   **Styling:** TailwindCSS để dựng giao diện nhanh.
-*   **Bản đồ:** MapLibre GL JS (mã nguồn mở, miễn phí 100%, không yêu cầu API key như Mapbox).
-*   **Quản lý State:** React Hooks mặc định.
+*   **Language:** TypeScript for type safety.
+*   **Styling:** TailwindCSS for fast UI building.
+*   **Map:** MapLibre GL JS (open source, completely free, no API key needed unlike Mapbox).
+*   **State management:** built-in React hooks.
 
-### 2.3. Backend Specifications (Python FastAPI)
+### 2.3. Backend specifications (Python FastAPI)
 *   **Framework:** FastAPI.
-*   **Database ORM:** SQLAlchemy kết hợp GeoAlchemy2 (để xử lý dữ liệu PostGIS).
-*   **Bảo mật & Spam Check:**
-    *   Sử dụng thư viện `hashlib` để băm (hash) IP address của user + một chuỗi `SALT` bí mật. Chỉ lưu chuỗi Hash vào Database để đảm bảo tính ẩn danh.
-*   **Xử lý Upload Ảnh:** API nhận file multipart, kiểm tra định dạng (chỉ cho phép .jpg, .png), resize giảm dung lượng (dùng thư viện `Pillow`) và lưu trực tiếp vào thư mục `uploads/` trên ổ cứng của Server chạy Backend (trả về URL).
+*   **Database ORM:** SQLAlchemy with GeoAlchemy2 (for PostGIS data).
+*   **Security & spam check:**
+    *   The `hashlib` library hashes the user's IP address together with a secret `SALT` string. Only the hash is stored in the database, to keep reporters anonymous.
+*   **Image upload handling:** the API accepts a multipart file, checks the format (only .jpg and .png), resizes it to reduce its size (with `Pillow`) and saves it directly to the `uploads/` folder on the backend server's disk (returning a URL).
 
-### 2.4. Database Schema (PostgreSQL)
-Cần có một bảng chính để lưu Check-in:
+### 2.4. Database schema (PostgreSQL)
+One main table stores the check-ins:
 *   `table: field_reports`
-    *   `id` (UUID hoặc Integer, Primary Key)
-    *   `geom` (PostGIS Geometry, POINT, tọa độ check-in)
-    *   `comment` (Text)
-    *   `image_url` (Varchar, link ảnh local)
-    *   `user_ip_hash` (Varchar, IP đã băm)
-    *   `created_at` (Timestamp)
+    *   `id` (UUID or integer, primary key)
+    *   `geom` (PostGIS geometry, POINT, check-in coordinates)
+    *   `comment` (text)
+    *   `image_url` (varchar, local image link)
+    *   `user_ip_hash` (varchar, hashed IP)
+    *   `created_at` (timestamp)
 
-### 2.5. Data Pipeline Specifications
-Script Python thực hiện các bước:
-1. Đọc file CSV hiện tại.
-2. Dựa vào `lat`, `lon`, tạo các hình học Point (Chấm).
-3. Đưa các thuộc tính (NDVI, Rain, Loss Year, Elevation...) vào Properties của mỗi hình học.
-4. Xuất ra tệp `grid_data.geojson`. 
+### 2.5. Data pipeline specifications
+The Python script:
+1. Reads the current CSV file.
+2. Builds a Point geometry from `lat` and `lon`.
+3. Puts the attributes (NDVI, rain, loss year, elevation…) into each geometry's properties.
+4. Writes the file `grid_data.geojson`.
 
 ---
 
-## 3. Kế hoạch Deploy trên 1 Server
-Vì cả Frontend và Backend sẽ chạy trên cùng một máy chủ (Server), luồng hoạt động sẽ như sau:
-1. **Tiền xử lý Data:** Chạy file `csv_to_geojson.py` để tạo ra tệp `.geojson` đặt trong thư mục `public` của Frontend.
-2. **Backend:** Chạy FastAPI bằng `uvicorn` (hoặc `gunicorn` trên production) ở cổng 8000. Dịch vụ này sẽ kết nối thẳng tới PostgreSQL (cùng nằm trên server này hoặc qua VPN).
-3. **Frontend:** Build Next.js và chạy ở cổng 3000. Cấu hình Frontend gọi API tới `http://localhost:8000`.
-4. **Nginx:** Sử dụng Nginx làm Reverse Proxy để trỏ domain (VD: `gialai-forest-risk.com`) tới cổng 3000, và cấu hình route `/api` trỏ về cổng 8000.
+## 3. Single-Server Deployment Plan
+Because the frontend and the backend run on the same server, the flow is:
+1. **Data pre-processing:** run `csv_to_geojson.py` to produce the `.geojson` file in the frontend's `public` folder.
+2. **Backend:** run FastAPI with `uvicorn` (or `gunicorn` in production) on port 8000. It connects directly to PostgreSQL (on the same server or over a VPN).
+3. **Frontend:** build Next.js and run it on port 3000, configured to call the API at `http://localhost:8000`.
+4. **Nginx:** use Nginx as a reverse proxy pointing the domain (e.g. `gialai-forest-risk.com`) to port 3000, with the `/api` route pointing to port 8000.
