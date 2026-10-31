@@ -114,14 +114,6 @@ export default function PublicationPage() {
     roadmap3Title:  isVi ? 'Mở rộng toàn quốc' : 'Nationwide Scale-Up',
     roadmap3Desc:   isVi ? 'Khi dữ liệu FRMS được bàn giao, mở rộng theo mô hình 4 lớp: dữ liệu (chỉ cần lưới mới cho tỉnh mới) · mô hình (so sánh lại theo vùng, thêm boosting) · kiểm chứng (đối chiếu địa phương cho từng tỉnh) · triển khai (nền tảng vốn không phụ thuộc tỉnh).' : 'Once FRMS data is delivered, scale along four layers: data (a new province only needs a new grid) · modeling (re-run the comparison per region, add boosting) · validation (a local cross-check per province) · deployment (the platform is already province-agnostic).',
     roadmap3Badge:  isVi ? 'Đã lên kế hoạch' : 'Planned',
-    sectionOpenSci: isVi ? 'Khoa học mở' : 'Open Science',
-    openSciDesc:    isVi ? 'Toàn bộ tập dữ liệu và mã nguồn pipeline của VIGIL được công bố công khai sau khi xuất bản, phù hợp với cam kết về khoa học mở và có thể tái tạo.' : "All VIGIL datasets and pipeline code are made publicly available following publication, in line with our commitment to open, reproducible science.",
-    codeTitle:      isVi ? 'Mã nguồn Pipeline' : 'Pipeline Code',
-    codeDesc:       isVi ? 'Toàn bộ pipeline ML, script tiền xử lý và mã xây dựng lưới ô vuông trên GitHub.' : 'Full ML pipeline, preprocessing scripts, and grid construction code on GitHub.',
-    codeBtn:        isVi ? 'Xem kho lưu trữ ↗' : 'View Repository ↗',
-    dataTitle:      isVi ? 'Tập dữ liệu dự báo' : 'Prediction Dataset',
-    dataDesc:       isVi ? 'Bảng đặc trưng chính và dự báo mô hình cho huyện K\'Bang và Mang Yang.' : "Master feature table and model predictions for K'Bang and Mang Yang districts.",
-    dataBtn:        isVi ? 'Tải CSV ↗' : 'Download CSV ↗',
   };
 
   // Table II(A) provided split and II(B) area transfer K'Bang → Mang Yang; `best` marks the winning cells.
@@ -615,10 +607,6 @@ export default function PublicationPage() {
             </div>
           </div>
         </section>
-
-
-      {/* Open Science section removed */}
-
       </div>
 
       {/* Toast */}
