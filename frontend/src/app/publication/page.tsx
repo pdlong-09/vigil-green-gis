@@ -19,6 +19,9 @@ const CITE_BIBTEX = `@techreport{vigil2026idsol,
   note        = {Submitted to IDSOL 2026 — Emerging Technologies Olympiads (ETO)}
 }`;
 
+type ResultCol = 'model' | 'auc' | 'ap' | 'prec' | 'rec' | 'f1' | 'cap5' | 'cap10';
+type ResultRow = Record<ResultCol, string> & { scenario: string; kind: 'baseline' | 'normal' | 'highlight'; best?: ResultCol[] };
+
 export default function PublicationPage() {
   const { language } = useLanguage();
   const isVi = language === 'vi';
@@ -66,8 +69,8 @@ export default function PublicationPage() {
     abstractEN: `Deforestation monitoring requires both reliable historical mapping and actionable risk signals that support proactive intervention. VIGIL's objective is a nationwide deforestation early-warning capability for Vietnam: a complete pipeline that acquires data to train interpretable machine-learning models and deploys their outputs on an interactive public platform with early-warning alerts for forest rangers. A model general enough for nationwide use requires three data pillars - geographic, climatic, and human/production-context (local forest-management and logging records that distinguish licensed timber harvest from illegal clearing in the ground-truth label). The human/production pillar is not yet built nationwide: it requires forest-management data from local governments across every province, which Vietnam's Ministry of Agriculture and Environment (MAE) is compiling into a nationwide Forest Resource Monitoring System (FRMS); the dataset remains under preparation and has not yet been delivered. The team therefore first builds and validates the pipeline on the two pillars already open and accessible - geographic and climatic - using public 1 km grid-cell predictors from Hansen Global Forest Change, SRTM terrain, CHIRPS rainfall, and Sentinel-2 optical bands and indices (2023). We report this pipeline's first end-to-end validation on Gia Lai Province. Developed on K'Bang District and evaluated for geographic transferability on Mang Yang District, logistic regression and random forest substantially outperform a baseline score, achieving AUC of 0.817 and 0.861 on the provided split, and 0.589 and 0.535 under cross-district transfer. VIGIL's province-agnostic public platform (https://www.vigil.green/) already deploys these risk maps for Gia Lai alongside a crowdsourced field-reporting channel, providing an operational foundation for nationwide extension as local validation data becomes available elsewhere.`,
     abstractVI: `Giám sát mất rừng đòi hỏi cả bản đồ lịch sử đáng tin cậy lẫn tín hiệu rủi ro có thể hành động được, hỗ trợ can thiệp chủ động. Mục tiêu của VIGIL là năng lực cảnh báo sớm mất rừng trên toàn quốc cho Việt Nam: một pipeline hoàn chỉnh thu thập dữ liệu để huấn luyện các mô hình học máy có thể giải thích, rồi triển khai kết quả lên một nền tảng công khai, tương tác, có cảnh báo sớm cho lực lượng kiểm lâm. Một mô hình đủ tổng quát để dùng trên toàn quốc cần ba trụ cột dữ liệu - địa lý, khí hậu và bối cảnh con người/sản xuất (hồ sơ quản lý rừng và khai thác của địa phương, giúp phân biệt khai thác gỗ được cấp phép với phá rừng trái phép trong nhãn thực địa). Trụ cột con người/sản xuất chưa được xây dựng trên toàn quốc: nó cần dữ liệu quản lý rừng từ chính quyền địa phương của mọi tỉnh, hiện đang được Bộ Nông nghiệp và Môi trường (MAE) tổng hợp vào Hệ thống Theo dõi Tài nguyên Rừng quốc gia (FRMS); bộ dữ liệu này vẫn đang được chuẩn bị và chưa được bàn giao. Vì vậy, nhóm xây dựng và kiểm chứng pipeline trước trên hai trụ cột đã mở và truy cập được - địa lý và khí hậu - với các biến dự báo ở lưới 1 km từ Hansen Global Forest Change, địa hình SRTM, lượng mưa CHIRPS, các kênh và chỉ số quang học Sentinel-2 (2023). Bài báo trình bày lần kiểm chứng đầu-cuối đầu tiên của pipeline tại tỉnh Gia Lai. Được phát triển trên huyện K'Bang và đánh giá khả năng chuyển vùng trên huyện Mang Yang, hồi quy logistic và random forest vượt xa điểm baseline, đạt AUC lần lượt 0,817 và 0,861 trên tập chia sẵn, và 0,589 và 0,535 khi chuyển vùng. Nền tảng công khai, không phụ thuộc tỉnh của VIGIL (https://www.vigil.green/) đã triển khai các bản đồ rủi ro này cho Gia Lai cùng kênh báo cáo thực địa cộng đồng, tạo nền tảng vận hành để mở rộng ra toàn quốc khi dữ liệu kiểm chứng địa phương sẵn sàng ở các nơi khác.`,
     notableText: isVi
-      ? <><strong className="text-slate-800">Nổi bật:</strong> Hồi quy Logistic đạt Capture@10% = 19,0% — cao hơn nhẹ so với Rừng ngẫu nhiên (18,4%) trên tập kiểm tra nội bộ. Mô hình đơn giản, có thể diễn giải lại vượt trội về chỉ số vận hành quan trọng nhất.</>
-      : <><strong className="text-slate-800">Notable:</strong> Logistic Regression achieved Capture@10% = 19.0% — slightly higher than Random Forest (18.4%) on the internal split. The simpler, interpretable model outperforms on the most operationally relevant metric.</>,
+      ? <><strong className="text-slate-800">Nổi bật:</strong> Vì tập kiểm tra cân bằng 50/50, Cap@5% tối đa chỉ khoảng 0,098 (top 5% của 1.212 mẫu ≈ 61 mẫu, trên 620 mẫu mất rừng). Hồi quy Logistic đạt 0,089 — khoảng 90% mức trần — và khi chuyển sang huyện chưa từng thấy vẫn vượt Random Forest. Mô hình đơn giản, có thể giải thích lại chuyển vùng tốt hơn.</>
+      : <><strong className="text-slate-800">Notable:</strong> Because the test set is balanced 50/50, the highest achievable Cap@5% is only about 0.098 (the top 5% of 1,212 samples ≈ 61 samples, out of 620 loss samples). Logistic Regression reaches 0.089 — about 90% of that ceiling — and still beats Random Forest on an unseen district. The simpler, interpretable model transfers better.</>,
     step01Title: isVi ? 'Xây dựng lưới ô vuông' : 'Grid Construction',
     step01Desc:  isVi ? <>Vùng nghiên cứu được chia thành các ô lưới 1 km × 1 km, mỗi ô được gán mã định danh duy nhất <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">cell_id</code>. Nhãn và biến dự báo được tổng hợp theo đơn vị này để đảm bảo tính nhất quán không gian trên toàn bộ tập dữ liệu.</> : <>The study area is partitioned into 1 km × 1 km grid cells, each assigned a unique <code className="font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">cell_id</code>. Labels and predictors are aggregated to this footprint to ensure spatial consistency across all datasets.</>,
     step02Title: isVi ? 'Định nghĩa nhãn kết quả' : 'Outcome Definition',
@@ -90,8 +93,8 @@ export default function PublicationPage() {
     datasetsNote:  isVi ? 'Toàn bộ tập dữ liệu đều công khai. Xử lý qua Google Earth Engine (GEE) + Python.' : 'All datasets are publicly available. Processed via Google Earth Engine (GEE) + Python.',
     copyCiteApa:   isVi ? '📋 Sao chép APA' : '📋 Copy APA',
     copyCiteBib:   isVi ? '📋 Sao chép BibTeX' : '📋 Copy BibTeX',
-    internalSplit: isVi ? 'Kiểm tra nội bộ' : 'Internal split',
-    transferTest:  isVi ? 'Kiểm tra chuyển vùng' : 'Transfer test',
+    sameArea:      isVi ? 'Cùng vùng' : 'Same-area',
+    transferTest:  isVi ? 'Chuyển vùng' : 'Area transfer',
     sectionRoadmap: isVi ? 'Lộ trình nghiên cứu' : 'Research Roadmap',
     roadmap1Title:  isVi ? 'Thí điểm Gia Lai — Pipeline ML' : 'Gia Lai Pilot — ML Pipeline',
     roadmap1Desc:   isVi ? 'Dự báo nguy cơ mất rừng cấp huyện ở độ phân giải 1 km². Thiết kế hai huyện (K\'Bang + Mang Yang). Được chấp nhận đăng trên MDPI Remote Sensing Q1.' : "District-scale deforestation risk prediction at 1 km² resolution. Two-district design (K'Bang + Mang Yang). Accepted at MDPI Remote Sensing Q1.",
@@ -109,9 +112,19 @@ export default function PublicationPage() {
     dataTitle:      isVi ? 'Tập dữ liệu dự báo' : 'Prediction Dataset',
     dataDesc:       isVi ? 'Bảng đặc trưng chính và dự báo mô hình cho huyện K\'Bang và Mang Yang.' : "Master feature table and model predictions for K'Bang and Mang Yang districts.",
     dataBtn:        isVi ? 'Tải CSV ↗' : 'Download CSV ↗',
-    internalSplitScenario: isVi ? 'Kiểm tra nội bộ' : 'Internal split',
-    transferTestScenario:  isVi ? 'Kiểm tra chuyển vùng' : 'Transfer test',
   };
+
+  // Table II(A) provided split and II(B) area transfer K'Bang → Mang Yang; `best` marks the winning cells.
+  const lr = isVi ? 'Hồi quy Logistic' : 'Logistic Reg.';
+  const base = isVi ? 'Tham chiếu' : 'Baseline';
+  const results: ResultRow[] = [
+    { scenario: tx.sameArea, model: base, auc: '0.504', ap: '0.559', prec: '0.493', rec: '0.489', f1: '0.491', cap5: '0.077', cap10: '0.129', kind: 'baseline' },
+    { scenario: tx.sameArea, model: lr, auc: '0.817', ap: '0.815', prec: '0.715', rec: '0.835', f1: '0.771', cap5: '0.089', cap10: '0.179', kind: 'normal', best: ['rec', 'cap5', 'cap10'] },
+    { scenario: tx.sameArea, model: 'Random Forest', auc: '0.861', ap: '0.841', prec: '0.782', rec: '0.794', f1: '0.788', cap5: '0.087', cap10: '0.176', kind: 'highlight', best: ['model', 'auc', 'ap', 'prec', 'f1'] },
+    { scenario: tx.transferTest, model: base, auc: '0.376', ap: '0.416', prec: '0.495', rec: '0.962', f1: '0.654', cap5: '0.028', cap10: '0.059', kind: 'baseline' },
+    { scenario: tx.transferTest, model: lr, auc: '0.589', ap: '0.582', prec: '0.505', rec: '0.825', f1: '0.627', cap5: '0.062', cap10: '0.135', kind: 'highlight', best: ['model', 'auc', 'ap', 'cap5', 'cap10'] },
+    { scenario: tx.transferTest, model: 'Random Forest', auc: '0.535', ap: '0.533', prec: '0.515', rec: '0.698', f1: '0.593', cap5: '0.059', cap10: '0.111', kind: 'normal', best: ['prec'] },
+  ];
 
   const datasets = [
     {
@@ -359,9 +372,9 @@ export default function PublicationPage() {
                   <div>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                       {[
-                        { val: '0.942', label: `AUC · Random Forest\n${tx.internalSplit}`, color: GREEN },
-                        { val: '0.767', label: `AUC · ${isVi ? 'Kiểm tra chuyển vùng' : 'Transfer test'}\nK'Bang → Mang Yang`, color: GREEN },
-                        { val: '19.0%', label: `Capture@10%\n${isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}`, color: AMBER },
+                        { val: '0.861', label: `AUC · Random Forest\n${isVi ? 'Kiểm tra cùng vùng' : 'Same-area split'}`, color: GREEN },
+                        { val: '0.589', label: `AUC · ${isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}\n${isVi ? 'Chuyển vùng' : 'Area transfer'} K'Bang → Mang Yang`, color: GREEN },
+                        { val: '0.089', label: `Cap@5% · ${isVi ? 'Hồi quy Logistic' : 'Logistic Regression'}\n${isVi ? '≈ 90% mức trần 0,098' : '≈ 90% of the 0.098 ceiling'}`, color: AMBER },
                       ].map((s, i) => (
                         <div key={i} className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
                           <div className="text-2xl font-bold leading-none mb-1" style={{ color: s.color }}>{s.val}</div>
@@ -371,60 +384,42 @@ export default function PublicationPage() {
                     </div>
 
                     <div className="font-mono text-[10px] tracking-[0.08em] uppercase mb-2 font-bold" style={{ color: GREEN }}>
-                      {isVi ? 'Hiệu suất mô hình (Bảng 3)' : 'Model Performance (Table 3)'}
+                      {isVi ? 'Hiệu suất mô hình (Bảng II(A) cùng vùng · II(B) chuyển vùng K→M)' : 'Model Performance (Table II(A) provided split · II(B) area transfer K→M)'}
                     </div>
                     <div className="overflow-x-auto rounded-lg border border-slate-200 mb-3">
-                      <table className="w-full text-left text-xs min-w-[540px]">
+                      <table className="w-full text-left text-xs min-w-[720px]">
                         <thead className="bg-slate-50 font-mono text-[10px] uppercase border-b border-slate-200" style={{ color: GREEN }}>
                           <tr>
                             <th className="p-2.5">{isVi ? 'Kịch bản' : 'Scenario'}</th>
                             <th className="p-2.5">{isVi ? 'Mô hình' : 'Model'}</th>
                             <th className="p-2.5">AUC</th>
+                            <th className="p-2.5">AP</th>
+                            <th className="p-2.5">Precision</th>
+                            <th className="p-2.5">Recall</th>
                             <th className="p-2.5">F1</th>
-                            <th className="p-2.5">Capture@5%</th>
-                            <th className="p-2.5">Capture@10%</th>
+                            <th className="p-2.5">Cap@5%</th>
+                            <th className="p-2.5">Cap@10%</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 text-slate-600">
-                          <tr className="opacity-50">
-                            <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
-                            <td className="p-2.5">{isVi ? 'Tham chiếu' : 'Baseline'}</td>
-                            <td className="p-2.5">0.504</td><td className="p-2.5">0.491</td>
-                            <td className="p-2.5">7.7%</td><td className="p-2.5">12.9%</td>
-                          </tr>
-                          <tr>
-                            <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
-                            <td className="p-2.5">{isVi ? 'Hồi quy Logistic' : 'Logistic Reg.'}</td>
-                            <td className="p-2.5">0.931</td><td className="p-2.5">0.881</td>
-                            <td className="p-2.5">9.5%</td>
-                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>19.0%</td>
-                          </tr>
-                          <tr style={{ backgroundColor: `${GREEN}08` }}>
-                            <td className="p-2.5 font-medium text-slate-800">{tx.internalSplitScenario}</td>
-                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>Random Forest</td>
-                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>0.942</td>
-                            <td className="p-2.5">0.878</td><td className="p-2.5">9.2%</td><td className="p-2.5">18.4%</td>
-                          </tr>
-                          <tr className="opacity-50">
-                            <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
-                            <td className="p-2.5">{isVi ? 'Tham chiếu' : 'Baseline'}</td>
-                            <td className="p-2.5">0.376</td><td className="p-2.5">0.654</td>
-                            <td className="p-2.5">2.8%</td><td className="p-2.5">5.9%</td>
-                          </tr>
-                          <tr>
-                            <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
-                            <td className="p-2.5">{isVi ? 'Hồi quy Logistic' : 'Logistic Reg.'}</td>
-                            <td className="p-2.5">0.743</td><td className="p-2.5">0.666</td>
-                            <td className="p-2.5">8.8%</td><td className="p-2.5">17.0%</td>
-                          </tr>
-                          <tr style={{ backgroundColor: `${GREEN}08` }}>
-                            <td className="p-2.5 font-medium text-slate-800">{tx.transferTestScenario}</td>
-                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>Random Forest</td>
-                            <td className="p-2.5 font-bold" style={{ color: GREEN }}>0.767</td>
-                            <td className="p-2.5">0.671</td><td className="p-2.5">7.5%</td><td className="p-2.5">14.5%</td>
-                          </tr>
+                          {results.map((r, i) => {
+                            const best = (col: ResultCol) => r.best?.includes(col);
+                            const cell = (col: ResultCol) => (
+                              <td className={`p-2.5${best(col) ? ' font-bold' : ''}`} style={best(col) ? { color: GREEN } : undefined}>{r[col]}</td>
+                            );
+                            return (
+                              <tr key={i} className={r.kind === 'baseline' ? 'opacity-50' : ''}
+                                style={r.kind === 'highlight' ? { backgroundColor: `${GREEN}08` } : undefined}>
+                                <td className="p-2.5 font-medium text-slate-800">{r.scenario}</td>
+                                {cell('model')}{cell('auc')}{cell('ap')}{cell('prec')}{cell('rec')}{cell('f1')}{cell('cap5')}{cell('cap10')}
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="font-mono text-[10px] text-slate-400 mb-3">
+                      {isVi ? 'Cùng vùng: N_test = 1.212, N_pos = 620 · Chuyển vùng: N_test = 2.000, N_pos = 1.000' : 'Same-area: N_test = 1,212, N_pos = 620 · Area transfer: N_test = 2,000, N_pos = 1,000'}
                     </div>
 
                     <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 leading-relaxed">
